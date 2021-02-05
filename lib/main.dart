@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glory_todo_desktop/Pages/TodoPage.dart';
+import 'package:glory_todo_desktop/Pages/ProjectPage.dart';
 import 'package:glory_todo_desktop/core/JSON_Manager/Json_Manager.dart';
 import 'package:glory_todo_desktop/core/Manager/Manager.dart';
 
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: TodoPage(),
+      home: ProjectPage(),
     );
   }
 }

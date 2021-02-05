@@ -5,12 +5,12 @@ import 'dart:convert';
 
 import 'package:glory_todo_desktop/core/models/Project.dart';
 
-class TodoPage extends StatefulWidget {
+class ProjectPage extends StatefulWidget {
   @override
-  _TodoPageState createState() => _TodoPageState();
+  _ProjectPageState createState() => _ProjectPageState();
 }
 
-class _TodoPageState extends State<TodoPage> {
+class _ProjectPageState extends State<ProjectPage> {
   bool isNight = true;
   Color geceArkaPlan = Colors.black;
   Color geceOnPlan = Color(0xFF212121);
@@ -21,6 +21,15 @@ class _TodoPageState extends State<TodoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          elevation: 0.4,
+          title: Text(
+            "Glory Todo Desktop",
+            style: TextStyle(
+              fontFamily: "Roboto",
+              fontWeight: FontWeight.w400,
+              color: isNight ? Colors.white : Color(0xFF212121),
+            ),
+          ),
           backgroundColor: isNight ? Color(0xFF212121) : Colors.white,
           actions: [
             IconButton(
@@ -35,7 +44,7 @@ class _TodoPageState extends State<TodoPage> {
                 })
           ],
         ),
-        backgroundColor: isNight ? Colors.black : Color(0xFFf1f2f6),
+        backgroundColor: isNight ? Colors.black : Color(0xFFE3E6EB),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(0xFF212121),
           child: Icon(Icons.add),
@@ -60,6 +69,7 @@ class _TodoPageState extends State<TodoPage> {
                       backgroundColor: isNight ? geceOnPlan : Color(0xFFf1f2f6),
                       actions: [
                         FlatButton(
+                          minWidth: MediaQuery.of(context).size.width,
                           color: Colors.green.shade400,
                           onPressed: () {
                             setState(() {
