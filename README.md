@@ -1,6 +1,6 @@
-# glory_todo_desktop
+# Glort Todo Desktop
 
-A new Flutter project.
+Basic Flutter Desktop Project!
 
 ## Getting Started
 
