@@ -81,3 +81,24 @@ Future<List<Project>> readColumns() async {
 
   return tablolar;
 }
+
+//FİND COLUMN WİTH NAME
+Future<List<ProjectColumn>> findProjectColumns(String projectName) async {
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + kolonlar;
+  List<String> cont = File(path).readAsLinesSync();
+  var tablolar = <ProjectColumn>[];
+  cont.forEach((element) {
+    //print("e: " + element);
+    List<String> l = element.split("#");
+    if (projectName == l[0]) {
+      ProjectColumn yeni = new ProjectColumn(l[0], l[1]);
+      print(
+          "BULUNDU :=======================================================>  " +
+              l[0]);
+      tablolar.add(yeni);
+    }
+  });
+
+  return tablolar;
+}

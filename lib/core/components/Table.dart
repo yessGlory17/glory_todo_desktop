@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/Pages/TodosPage.dart';
+import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
 
 class TabloWidget extends StatefulWidget {
