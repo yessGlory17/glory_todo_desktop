@@ -2,6 +2,19 @@
 
 Basic Flutter Desktop Project!
 
+
+## Todos
+  ### 0.1.0
+   - Primitive Storage
+   - Basic Design
+   - Create Project Page
+   - Create Column Page
+   - Create Todo
+### 0.2.0
+  - Remove Project
+  - Remove Column
+  - Check Todo
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
