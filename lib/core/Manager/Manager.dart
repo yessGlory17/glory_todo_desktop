@@ -108,7 +108,7 @@ Future<List<ProjectColumn>> findProjectColumns(String projectName) async {
     if (projectName == l[0]) {
       ProjectColumn yeni = new ProjectColumn(l[0], l[1]);
       print(
-          "BULUNDU :=======================================================>  " +
+          "BULUNDU[Kolon] :=======================================================>  " +
               l[0]);
       tablolar.add(yeni);
     }
@@ -119,7 +119,7 @@ Future<List<ProjectColumn>> findProjectColumns(String projectName) async {
 
 Future<List<Todo>> findColumnTodos(String columnName) async {
   String documentPath = await provider.getApplicationDocumentsPath();
-  String path = documentPath + kolonlar;
+  String path = documentPath + gorevler;
   List<String> cont = File(path).readAsLinesSync();
   var tablolar = <Todo>[];
   cont.forEach((element) {
@@ -128,7 +128,7 @@ Future<List<Todo>> findColumnTodos(String columnName) async {
     if (columnName == l[0]) {
       Todo yeni = new Todo(l[0], l[1]);
       print(
-          "BULUNDU :=======================================================>  " +
+          "BULUNDU[Görev] :=======================================================>  " +
               l[0]);
       tablolar.add(yeni);
     }

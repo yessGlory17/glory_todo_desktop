@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/Pages/TodosPage.dart';
 import 'package:glory_todo_desktop/core/Manager/Manager.dart';
+import 'package:glory_todo_desktop/core/components/TodoWidget.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
 import 'package:glory_todo_desktop/core/models/Todo.dart';
+
+/*
+
+  BU SAYFADA KOLONLAR VE HER KOLONA AİT GÖREVLER YER ALIYOR.
+
+
+ */
 
 class ColumnWidget extends StatefulWidget {
   bool isNight;
@@ -16,11 +24,10 @@ class ColumnWidget extends StatefulWidget {
 }
 
 class _ColumnWidgetState extends State<ColumnWidget> {
-  var columnKontrol = TextEditingController();
+  var gorevEklemeKontrol = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    String tableHead = widget.tableHeader;
-    Future<List<ProjectColumn>> gorevler = findProjectColumns("İLK TABLO");
+    Future<List<Todo>> gorevlerListe = findColumnTodos(widget.tableHeader);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -31,8 +38,10 @@ class _ColumnWidgetState extends State<ColumnWidget> {
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-        width: 250,
-        constraints: BoxConstraints(minHeight: 150),
+        width: 300,
+        constraints: BoxConstraints(
+          minHeight: 200,
+        ),
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -48,95 +57,121 @@ class _ColumnWidgetState extends State<ColumnWidget> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15.0),
-              child: Text(
-                widget.tableHeader,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: widget.isNight ? Colors.white : Colors.black,
-                ),
-              ),
+              child: Text(widget.tableHeader,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: widget.isNight ? Colors.white : Colors.black,
+                  )),
             ),
-            Card(
-              child: FutureBuilder(
-                future: gorevler,
-                builder: (context, snapshot) {
-                  //print("SONUC : " + snapshot.data[0]);
-                  List<ProjectColumn> projects = snapshot.data ?? [];
-                  if (projects.length > 0) {
-                    print("Column : " + projects[0].pColumnHeader);
-                  }
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: projects.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return new ColumnWidget(
-                          widget.isNight, projects[index].pColumnHeader);
-                      //print("YAZ :=> " + data.toString());
-                    },
-                  );
-                },
-              ),
-            ),
+
+            //Buraya Görevler Listesi gelmeli
             Container(
-              margin: EdgeInsets.only(top: 10),
-              width: 250,
-              height: 35,
-              color: Colors.transparent,
-              child: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  setState(() {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return new AlertDialog(
-                            title: Text(
-                              "Görev Ekle",
-                              style: TextStyle(
-                                  color: widget.isNight
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
-                            content: TextFormField(
-                              controller: columnKontrol,
-                              decoration: InputDecoration(
-                                  hintText: "Görevi Giriniz",
-                                  hintStyle: TextStyle(
+                width: 300,
+                height: MediaQuery.of(context).size.height - 225,
+                child: FutureBuilder(
+                  future: gorevlerListe,
+                  builder: (context, snapshot) {
+                    List<Todo> listem = snapshot.data ?? [];
+                    if (listem.length > 0) {
+                      print("Görev :==> " + listem[0].todo);
+                      return ListView.builder(
+                          itemCount: listem.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return TodoWidget(listem[index].todo,
+                                listem[index].isCheck, widget.isNight);
+                          });
+                    } else {
+                      return Center(
+                          child: Text(
+                        "Herhangi bir görev yok!",
+                        style: TextStyle(
+                            color: widget.isNight
+                                ? Colors.white60
+                                : Colors.black87),
+                      ));
+                    }
+                  },
+                )),
+            //En altta ekleme butonu bulunmalı
+            Container(
+                width: 200,
+                height: 20,
+                child: IconButton(
+                    icon: Icon(Icons.add,
+                        color: widget.isNight ? Colors.white : Colors.black),
+                    onPressed: () {
+                      setState(() {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return new AlertDialog(
+                                title: Text(
+                                  "Yeni Görev Ekle",
+                                  style: TextStyle(
                                       color: widget.isNight
                                           ? Colors.white
-                                          : Colors.black)),
-                            ),
-                            backgroundColor: widget.isNight
-                                ? Color(0xFF212121)
-                                : Color(0xFFf1f2f6),
-                            actions: [
-                              Center(
-                                child: FlatButton(
-                                  color: Colors.green.shade400,
-                                  onPressed: () {
-                                    setState(() {
-                                      WriteTodo(new Todo(widget.tableHeader,
-                                          columnKontrol.text));
-
-                                      //tables = readColumns();
-                                      Navigator.pop(context);
-                                    });
-                                  },
-                                  child: Container(
-                                    child: Text(
-                                      "Oluştur",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
+                                          : Colors.black),
                                 ),
-                              )
-                            ],
-                          );
-                        });
-                  });
-                },
-              ),
-            )
+                                content: TextFormField(
+                                  controller: gorevEklemeKontrol,
+                                  decoration: InputDecoration(
+                                      hintText: "Görevi Giriniz",
+                                      hintStyle: TextStyle(
+                                          color: widget.isNight
+                                              ? Colors.white
+                                              : Colors.black)),
+                                ),
+                                backgroundColor: widget.isNight
+                                    ? Color(0xFF212121)
+                                    : Color(0xFFf1f2f6),
+                                actions: [
+                                  Center(
+                                    child: FlatButton(
+                                      color: Colors.green.shade400,
+                                      onPressed: () {
+                                        setState(() {
+                                          WriteTodo(Todo(widget.tableHeader,
+                                              gorevEklemeKontrol.text));
+
+                                          gorevlerListe = findColumnTodos(
+                                              widget.tableHeader);
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Container(
+                                        child: Text(
+                                          "Ekle",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            });
+                      }); //SetState sonu
+                    })),
+            //BURASI PROGRESS BAR
+            // Container(
+            //   width: 200,
+            //   margin: EdgeInsets.symmetric(vertical: 10),
+            //   // decoration: BoxDecoration(
+            //   //   boxShadow: [
+            //   //     BoxShadow(
+            //   //       color: Color(0x738ABFC7),
+
+            //   //       blurRadius: 1,
+            //   //       offset: Offset(0, 2), // changes position of shadow
+            //   //     ),
+            //   //   ],
+            //   // ),
+            //   child: LinearProgressIndicator(
+            //     value: 0.5,
+            //     backgroundColor: Color(0x4D131111),
+            //     minHeight: 6,
+            //     valueColor: AlwaysStoppedAnimation<Color>(Colors.lightGreen),
+            //   ),
+            // ),
           ],
         ),
       ),
