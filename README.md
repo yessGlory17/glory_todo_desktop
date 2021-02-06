@@ -2,6 +2,8 @@
 
 Basic and Primitive Flutter Desktop Project!
 
+## Goal
+> My goal is to accept my inexperience without worrying about the plugin shortcomings of Flutter Desktop. Creating a simple application to solve my own problems. Because no mission app meets exactly what I need. That's why I decided to do my best. I would be very happy if you try the first decisions when I reach the release. If you like it, don't forget to give stars!
 
 ## Todos
   ### 0.1.0
