@@ -12,7 +12,7 @@ Basic and Primitive Flutter Desktop Project!
    - Basic Design
    - Create Project Page ✓
    - Create Column Page ✓
-   - Create Todo
+   - Create Todo ✓
 ### 0.2.0
  > Target Date 15.02.2021
   - Remove Project
