@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/Pages/TodosPage.dart';
+import 'package:glory_todo_desktop/core/models/Project.dart';
 
 class TabloWidget extends StatefulWidget {
   bool isNight;
   String tableHeader;
   TabloWidget(this.isNight, this.tableHeader);
+  Project n = new Project("1", "test");
 
   @override
   _TabloWidgetState createState() => _TabloWidgetState();
@@ -18,12 +20,13 @@ class _TabloWidgetState extends State<TabloWidget> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => TodosPage(widget.tableHeader)));
+                builder: (context) =>
+                    TodosPage(widget.isNight, widget.tableHeader)));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         width: 250,
-        height: 200,
+        height: 150,
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -41,23 +44,23 @@ class _TabloWidgetState extends State<TabloWidget> {
               padding: const EdgeInsets.symmetric(vertical: 15.0),
               child: Text(widget.tableHeader,
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 20,
                     color: widget.isNight ? Colors.white : Colors.black,
                   )),
             ),
             Container(
               width: 200,
               margin: EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x738ABFC7),
+              // decoration: BoxDecoration(
+              //   boxShadow: [
+              //     BoxShadow(
+              //       color: Color(0x738ABFC7),
 
-                    blurRadius: 6,
-                    offset: Offset(0, 2), // changes position of shadow
-                  ),
-                ],
-              ),
+              //       blurRadius: 1,
+              //       offset: Offset(0, 2), // changes position of shadow
+              //     ),
+              //   ],
+              // ),
               child: LinearProgressIndicator(
                 value: 0.5,
                 backgroundColor: Color(0x4D131111),

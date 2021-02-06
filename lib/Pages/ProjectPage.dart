@@ -68,21 +68,22 @@ class _ProjectPageState extends State<ProjectPage> {
                       ),
                       backgroundColor: isNight ? geceOnPlan : Color(0xFFf1f2f6),
                       actions: [
-                        FlatButton(
-                          minWidth: MediaQuery.of(context).size.width,
-                          color: Colors.green.shade400,
-                          onPressed: () {
-                            setState(() {
-                              WriteTablo(new Project("1", projeBaslik.text));
+                        Center(
+                          child: FlatButton(
+                            color: Colors.green.shade400,
+                            onPressed: () {
+                              setState(() {
+                                WriteTablo(new Project("1", projeBaslik.text));
 
-                              tables = read();
-                              Navigator.pop(context);
-                            });
-                          },
-                          child: Container(
-                            child: Text(
-                              "Oluştur",
-                              style: TextStyle(color: Colors.white),
+                                tables = read();
+                                Navigator.pop(context);
+                              });
+                            },
+                            child: Container(
+                              child: Text(
+                                "Oluştur",
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ),
                         )
@@ -96,7 +97,7 @@ class _ProjectPageState extends State<ProjectPage> {
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 300,
+              height: 150,
               child: FutureBuilder(
                 future: tables,
                 builder: (context, snapshot) {
