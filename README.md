@@ -1,14 +1,14 @@
 # Glort Todo Desktop
 
-Basic Flutter Desktop Project!
+Basic and Primitive Flutter Desktop Project!
 
 
 ## Todos
   ### 0.1.0
    - Primitive Storage
    - Basic Design
-   - Create Project Page
-   - Create Column Page
+   - Create Project Page ✓
+   - Create Column Page ✓
    - Create Todo
 ### 0.2.0
   - Remove Project
