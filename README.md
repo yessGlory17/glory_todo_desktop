@@ -1,16 +1,20 @@
 # Glort Todo Desktop
 
-Basic Flutter Desktop Project!
+Basic and Primitive Flutter Desktop Project!
 
+## Goal
+> My goal is to accept my inexperience without worrying about the plugin shortcomings of Flutter Desktop. Creating a simple application to solve my own problems. Because no mission app meets exactly what I need. That's why I decided to do my best. I would be very happy if you try the first decisions when I reach the release. If you like it, don't forget to give stars!
 
 ## Todos
   ### 0.1.0
+  > Target Date 10.02.2021
    - Primitive Storage
    - Basic Design
-   - Create Project Page
-   - Create Column Page
+   - Create Project Page ✓
+   - Create Column Page ✓
    - Create Todo
 ### 0.2.0
+ > Target Date 15.02.2021
   - Remove Project
   - Remove Column
   - Check Todo
