@@ -120,7 +120,7 @@ class _TodosPageState extends State<TodosPage> {
                 maxHeight: MediaQuery.of(context).size.height - 50,
               ),
               child: FutureBuilder(
-                future: kolonListe,
+                future: kolonListe ?? [],
                 builder: (context, snapshot) {
                   //print("SONUC : " + snapshot.data[0]);
                   List<ProjectColumn> projects = snapshot.data ?? [];

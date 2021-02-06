@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glory_todo_desktop/core/GloryIcons/GloryIcons.dart';
 
 class TodoWidget extends StatefulWidget {
   bool isNight;
@@ -16,9 +17,20 @@ class _TodoWidgetState extends State<TodoWidget> {
     return Card(
       color: widget.isNight ? Colors.black : Color(0xFFf1f2f6),
       child: ListTile(
-        leading: widget.isTodoCheck
-            ? Icon(Icons.check_circle_outline)
-            : Icon(Icons.stop_circle),
+        leading: IconButton(
+          icon: Icon(
+            widget.isTodoCheck
+                ? GloryIcons.check_circle
+                : GloryIcons.circle_empty,
+            color: widget.isNight ? Colors.white60 : Colors.black87,
+          ),
+          onPressed: () {
+            setState(() {
+              widget.isTodoCheck != widget.isNight;
+              print("B  A S I L D I" + widget.isTodoCheck.toString());
+            });
+          },
+        ),
         title: Text(
           todo,
           style: TextStyle(
