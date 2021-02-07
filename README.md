@@ -1,4 +1,4 @@
-# Glort Todo Desktop
+# Glory Todo Desktop
 
 Basic and Primitive Flutter Desktop Project!
 
