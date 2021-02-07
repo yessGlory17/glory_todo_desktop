@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/Pages/ProjectPage.dart';
-import 'package:glory_todo_desktop/core/JSON_Manager/Json_Manager.dart';
 import 'package:glory_todo_desktop/core/Manager/Manager.dart';
 
 void main() {

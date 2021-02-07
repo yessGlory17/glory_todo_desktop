@@ -16,7 +16,8 @@ import 'package:glory_todo_desktop/core/models/Todo.dart';
 class ColumnWidget extends StatefulWidget {
   bool isNight;
   String tableHeader;
-  ColumnWidget(this.isNight, this.tableHeader);
+  String tableUnicId;
+  ColumnWidget(this.isNight, this.tableHeader, this.tableUnicId);
   Project n = new Project("1", "test");
 
   @override
@@ -121,11 +122,14 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                                     color: Colors.green.shade400,
                                     onPressed: () {
                                       setState(() {
-                                        WriteTodo(Todo(widget.tableHeader,
+                                        WriteTodo(Todo.withId(
+                                            widget.tableHeader,
                                             gorevEklemeKontrol.text));
 
                                         gorevlerListe =
                                             findColumnTodos(widget.tableHeader);
+
+                                        gorevEklemeKontrol.clear();
                                         Navigator.pop(context);
                                       });
                                     },

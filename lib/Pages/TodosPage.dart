@@ -8,7 +8,8 @@ import 'package:glory_todo_desktop/core/components/Table.dart';
 class TodosPage extends StatefulWidget {
   bool isNight;
   String projectName;
-  TodosPage(this.isNight, this.projectName);
+  String projectUnicId;
+  TodosPage(this.isNight, this.projectName, this.projectUnicId);
 
   @override
   _TodosPageState createState() => _TodosPageState();
@@ -91,10 +92,14 @@ class _TodosPageState extends State<TodosPage> {
                               color: Colors.green.shade400,
                               onPressed: () {
                                 setState(() {
-                                  WriteColumn(new ProjectColumn(
-                                      widget.projectName, kontroller.text));
+                                  WriteColumn(new ProjectColumn.withID(
+                                    widget
+                                        .projectName, //Burayı unic id olarak verince null düşüyor ve soruna neden oluyor
+                                    kontroller.text,
+                                  ));
 
                                   //tables = readColumns();
+                                  kontroller.clear();
                                   Navigator.pop(context);
                                 });
                               },
@@ -126,19 +131,31 @@ class _TodosPageState extends State<TodosPage> {
                   List<ProjectColumn> projects = snapshot.data ?? [];
                   if (projects.length > 0) {
                     print("Column : " + projects[0].pColumnHeader);
-                  }
 
-                  return ListView.builder(
-                    key: ValueKey(projects[myIndex].pColumnHeader),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: projects.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      //Buradaki Tablo Widget Column Widget İle Değiştirilecek.
-                      return new ColumnWidget(
-                          widget.isNight, projects[index].pColumnHeader);
-                      //print("YAZ :=> " + data.toString());
-                    },
-                  );
+                    return ListView.builder(
+                      key: ValueKey(projects[myIndex].pColumnHeader),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: projects.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        //Buradaki Tablo Widget Column Widget İle Değiştirilecek.
+                        return new ColumnWidget(
+                            widget.isNight,
+                            projects[index].pColumnHeader,
+                            projects[index].projectUnicId);
+                        //print("YAZ :=> " + data.toString());
+                      },
+                    );
+                  } else {
+                    return new Center(
+                      child: Text(
+                        "Herhangi bir kolon bulunamadı!",
+                        style: TextStyle(
+                            color: widget.isNight
+                                ? Colors.white60
+                                : Colors.black87),
+                      ),
+                    );
+                  }
                 },
               ),
             )

@@ -54,7 +54,9 @@ void WriteTablo(Project tabloEleman) async {
   File file = new File(path);
   String id = tabloEleman.projectID;
   String isim = tabloEleman.projectHeader;
-  file.writeAsStringSync("$id" + "#" + "$isim" + "\n", mode: FileMode.append);
+  String unicId = tabloEleman.projectUnicId;
+  file.writeAsStringSync("$id" + "#" + "$isim" + "#" + "$unicId" + "\n",
+      mode: FileMode.append);
 }
 
 //Kolonu Dosyaya yazar
@@ -62,9 +64,11 @@ void WriteColumn(ProjectColumn kolonEleman) async {
   String documentPath = await provider.getApplicationDocumentsPath();
   String path = documentPath + kolonlar;
   File file = new File(path);
-  String id = kolonEleman.projectName;
+  String id = kolonEleman.projectUnicId;
   String isim = kolonEleman.pColumnHeader;
-  file.writeAsStringSync("$id" + "#" + "$isim" + "\n", mode: FileMode.append);
+  String columnUnicId = kolonEleman.punicColumnId;
+  file.writeAsStringSync("$id" + "#" + "$isim" + "#" + "$columnUnicId" + "\n",
+      mode: FileMode.append);
 }
 
 //GÖREVİ YAZ
@@ -73,10 +77,12 @@ void WriteTodo(Todo todoEleman) async {
   String documentPath = await provider.getApplicationDocumentsPath();
   String path = documentPath + gorevler;
   File file = new File(path);
-  String id = todoEleman.columnName;
+  String id = todoEleman.columnUnicId;
   String isim = todoEleman.todo;
   bool isCheck = todoEleman.isCheck;
-  file.writeAsStringSync("$id" + "#" + "$isim" + "#" + "$isCheck" "\n",
+  String todoUnicId = todoEleman.todoId;
+  file.writeAsStringSync(
+      "$id" + "#" + "$isim" + "#" + "$isCheck" + "#" + "$todoUnicId" + "\n",
       mode: FileMode.append);
 }
 
@@ -97,7 +103,7 @@ Future<List<Project>> readColumns() async {
 }
 
 //FİND COLUMN WİTH NAME
-Future<List<ProjectColumn>> findProjectColumns(String projectName) async {
+Future<List<ProjectColumn>> findProjectColumns(String projectUnicId) async {
   String documentPath = await provider.getApplicationDocumentsPath();
   String path = documentPath + kolonlar;
   List<String> cont = File(path).readAsLinesSync();
@@ -105,7 +111,7 @@ Future<List<ProjectColumn>> findProjectColumns(String projectName) async {
   cont.forEach((element) {
     //print("e: " + element);
     List<String> l = element.split("#");
-    if (projectName == l[0]) {
+    if (projectUnicId == l[0]) {
       ProjectColumn yeni = new ProjectColumn(l[0], l[1]);
       print(
           "BULUNDU[Kolon] :=======================================================>  " +
@@ -117,7 +123,7 @@ Future<List<ProjectColumn>> findProjectColumns(String projectName) async {
   return tablolar;
 }
 
-Future<List<Todo>> findColumnTodos(String columnName) async {
+Future<List<Todo>> findColumnTodos(String columnUnicId) async {
   String documentPath = await provider.getApplicationDocumentsPath();
   String path = documentPath + gorevler;
   List<String> cont = File(path).readAsLinesSync();
@@ -125,7 +131,7 @@ Future<List<Todo>> findColumnTodos(String columnName) async {
   cont.forEach((element) {
     //print("e: " + element);
     List<String> l = element.split("#");
-    if (columnName == l[0]) {
+    if (columnUnicId == l[0]) {
       Todo yeni = new Todo(l[0], l[1]);
       print(
           "BULUNDU[Görev] :=======================================================>  " +
@@ -137,7 +143,5 @@ Future<List<Todo>> findColumnTodos(String columnName) async {
   return tablolar;
 }
 
-
-Future<void> UpdateFile(List<dynamic> updateList){
-  
-}
+//Değişiklik yapılmış listeyi alır. Önce dosyanın içini tamamen siler ve listeyi tekrardan o dosyaya yazar.
+Future<void> UpdateTodos(List<dynamic> updateList) {}

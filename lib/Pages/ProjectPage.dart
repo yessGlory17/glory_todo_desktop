@@ -26,7 +26,7 @@ class _ProjectPageState extends State<ProjectPage> {
             "Glory Todo Desktop",
             style: TextStyle(
               fontFamily: "Roboto",
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w200,
               color: isNight ? Colors.white : Color(0xFF212121),
             ),
           ),
@@ -73,9 +73,11 @@ class _ProjectPageState extends State<ProjectPage> {
                             color: Colors.green.shade400,
                             onPressed: () {
                               setState(() {
-                                WriteTablo(new Project("1", projeBaslik.text));
+                                WriteTablo(
+                                    new Project.withId("1", projeBaslik.text));
 
                                 tables = read();
+                                projeBaslik.clear();
                                 Navigator.pop(context);
                               });
                             },
@@ -111,7 +113,9 @@ class _ProjectPageState extends State<ProjectPage> {
                     itemCount: projects.length,
                     itemBuilder: (BuildContext context, int index) {
                       return new TabloWidget(
-                          isNight, projects[index].projectHeader);
+                          isNight,
+                          projects[index].projectHeader,
+                          projects[index].projectUnicId);
                       //print("YAZ :=> " + data.toString());
                     },
                   );

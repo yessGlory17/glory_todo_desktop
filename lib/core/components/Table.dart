@@ -6,7 +6,8 @@ import 'package:glory_todo_desktop/core/models/Project.dart';
 class TabloWidget extends StatefulWidget {
   bool isNight;
   String tableHeader;
-  TabloWidget(this.isNight, this.tableHeader);
+  String tableUnicId;
+  TabloWidget(this.isNight, this.tableHeader, this.tableUnicId);
   Project n = new Project("1", "test");
 
   @override
@@ -21,8 +22,8 @@ class _TabloWidgetState extends State<TabloWidget> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    TodosPage(widget.isNight, widget.tableHeader)));
+                builder: (context) => TodosPage(
+                    widget.isNight, widget.tableHeader, widget.tableUnicId)));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -45,6 +46,8 @@ class _TabloWidgetState extends State<TabloWidget> {
               padding: const EdgeInsets.symmetric(vertical: 15.0),
               child: Text(widget.tableHeader,
                   style: TextStyle(
+                    fontFamily: "Roboto",
+                    fontWeight: FontWeight.w300,
                     fontSize: 20,
                     color: widget.isNight ? Colors.white : Colors.black,
                   )),
