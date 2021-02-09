@@ -16,11 +16,26 @@ class _ProjectPageState extends State<ProjectPage> {
   bool isNight = true;
   Color geceArkaPlan = Colors.black;
   Color geceOnPlan = Color(0xFF212121);
-  Future<List<Project>> tables = readProjects();
 
   var projeBaslik = TextEditingController();
+  Future<List<Project>> tables = readProjects();
+
+  void updateProjectsWidgets() {
+    setState(() {
+      tables = readProjects();
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    tables = readProjects();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("PROJE SAYFASIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
     return Scaffold(
         appBar: AppBar(
           elevation: 0.4,
@@ -131,7 +146,8 @@ class _ProjectPageState extends State<ProjectPage> {
                           isNight,
                           projects[index].projectName,
                           projects[index].projectID,
-                          projects[index].projectName);
+                          projects[index].projectName,
+                          updateProjectsWidgets);
                       //print("YAZ :=> " + data.toString());
                     },
                   );

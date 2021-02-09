@@ -11,7 +11,9 @@ class TodosPage extends StatefulWidget {
   String projectName;
   int projectId;
   String projecName;
-  TodosPage(this.isNight, this.projectName, this.projectId, this.projecName);
+  final Function() updateProjectWidgets;
+  TodosPage(this.isNight, this.projectName, this.projectId, this.projecName,
+      this.updateProjectWidgets);
 
   @override
   _TodosPageState createState() => _TodosPageState();
@@ -51,6 +53,13 @@ class _TodosPageState extends State<TodosPage> {
           actions: [
             IconButton(
               icon: Icon(Icons.delete, color: Colors.redAccent),
+              onPressed: () {
+                setState(() {
+                  removeProject(widget.projectId, widget.projecName);
+                  widget.updateProjectWidgets();
+                  Navigator.pop(context);
+                });
+              },
             ),
             IconButton(
                 icon: Icon(

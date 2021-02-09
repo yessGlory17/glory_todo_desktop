@@ -8,7 +8,9 @@ class TabloWidget extends StatefulWidget {
   String tableHeader;
   int projectId;
   String projectName;
-  TabloWidget(this.isNight, this.tableHeader, this.projectId, this.projectName);
+  final Function updateProjectsW;
+  TabloWidget(this.isNight, this.tableHeader, this.projectId, this.projectName,
+      this.updateProjectsW);
 
   @override
   _TabloWidgetState createState() => _TabloWidgetState();
@@ -22,8 +24,12 @@ class _TabloWidgetState extends State<TabloWidget> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => TodosPage(widget.isNight,
-                    widget.tableHeader, widget.projectId, widget.projectName)));
+                builder: (context) => TodosPage(
+                    widget.isNight,
+                    widget.tableHeader,
+                    widget.projectId,
+                    widget.projectName,
+                    widget.updateProjectsW)));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),

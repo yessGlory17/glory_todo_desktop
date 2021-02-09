@@ -28,10 +28,18 @@ class ColumnWidget extends StatefulWidget {
 
 class _ColumnWidgetState extends State<ColumnWidget> {
   var gorevEklemeKontrol = TextEditingController();
+  Future<List<Todo>> gorevlerListe;
+  void updateTodoList() {
+    setState(() {
+      gorevlerListe = findTodos(widget.projectId, widget.projectName,
+          widget.columnId, widget.columnName);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<List<Todo>> gorevlerListe = findTodos(widget.projectId,
-        widget.projectName, widget.columnId, widget.columnName);
+    gorevlerListe = findTodos(widget.projectId, widget.projectName,
+        widget.columnId, widget.columnName);
 
     //findColumnTodos(widget.tableUnicId); //widget.tableHeader
     return Container(
@@ -75,8 +83,16 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                     return ListView.builder(
                         itemCount: listem.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return TodoWidget(listem[index].todo,
-                              listem[index].isCheck, widget.isNight);
+                          return TodoWidget(
+                              listem[index].todo,
+                              listem[index].isCheck,
+                              widget.isNight,
+                              widget.projectId,
+                              widget.projectName,
+                              widget.columnId,
+                              widget.columnName,
+                              listem[index].todoId,
+                              updateTodoList);
                         });
                   } else {
                     print("Herhangi bir görev bulunamadı!");
@@ -98,70 +114,63 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                   icon: Icon(Icons.add,
                       color: widget.isNight ? Colors.white : Colors.black),
                   onPressed: () {
-                    setState(() {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return new AlertDialog(
-                              title: Text(
-                                "Yeni Görev Ekle",
-                                style: TextStyle(
-                                    color: widget.isNight
-                                        ? Colors.white
-                                        : Colors.black),
-                              ),
-                              content: TextFormField(
-                                controller: gorevEklemeKontrol,
-                                decoration: InputDecoration(
-                                    hintText: "Görevi Giriniz",
-                                    hintStyle: TextStyle(
-                                        color: widget.isNight
-                                            ? Colors.white
-                                            : Colors.black)),
-                              ),
-                              backgroundColor: widget.isNight
-                                  ? Color(0xFF212121)
-                                  : Color(0xFFf1f2f6),
-                              actions: [
-                                Center(
-                                  child: FlatButton(
-                                    color: Colors.green.shade400,
-                                    onPressed: () {
-                                      setState(() {
-                                        // WriteTodo(Todo(
-                                        //     3, gorevEklemeKontrol.text, false));
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return new AlertDialog(
+                            title: Text(
+                              "Yeni Görev Ekle",
+                              style: TextStyle(
+                                  color: widget.isNight
+                                      ? Colors.white
+                                      : Colors.black),
+                            ),
+                            content: TextFormField(
+                              controller: gorevEklemeKontrol,
+                              decoration: InputDecoration(
+                                  hintText: "Görevi Giriniz",
+                                  hintStyle: TextStyle(
+                                      color: widget.isNight
+                                          ? Colors.white
+                                          : Colors.black)),
+                            ),
+                            backgroundColor: widget.isNight
+                                ? Color(0xFF212121)
+                                : Color(0xFFf1f2f6),
+                            actions: [
+                              Center(
+                                child: FlatButton(
+                                  color: Colors.green.shade400,
+                                  onPressed: () {
+                                    setState(() {
+                                      addTodo(
+                                          Todo(1, gorevEklemeKontrol.text,
+                                              false),
+                                          widget.projectId,
+                                          widget.projectName,
+                                          widget.columnId,
+                                          widget.columnName);
 
-                                        // gorevlerListe =
-                                        //     findColumnTodos(widget.tableHeader);
-                                        addTodo(
-                                            Todo(1, gorevEklemeKontrol.text,
-                                                false),
-                                            widget.projectId,
-                                            widget.projectName,
-                                            widget.columnId,
-                                            widget.columnName);
-
-                                        gorevlerListe = findTodos(
-                                            widget.projectId,
-                                            widget.projectName,
-                                            widget.columnId,
-                                            widget.columnName);
-                                        gorevEklemeKontrol.clear();
-                                        Navigator.pop(context);
-                                      });
-                                    },
-                                    child: Container(
-                                      child: Text(
-                                        "Ekle",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
+                                      gorevlerListe = findTodos(
+                                          widget.projectId,
+                                          widget.projectName,
+                                          widget.columnId,
+                                          widget.columnName);
+                                      gorevEklemeKontrol.clear();
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                  child: Container(
+                                    child: Text(
+                                      "Ekle",
+                                      style: TextStyle(color: Colors.white),
                                     ),
                                   ),
-                                )
-                              ],
-                            );
-                          });
-                    }); //SetState sonu
+                                ),
+                              )
+                            ],
+                          );
+                        }); //SetState sonu
                   })),
         ],
       ),

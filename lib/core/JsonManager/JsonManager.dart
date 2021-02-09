@@ -37,9 +37,6 @@ Future<List<Project>> readProjects() async {
 
   return dondurelecekListe;
 }
-//Projeden Kolon Okuma
-
-//Kolondan Görev Okuma
 
 //!!-----------------------------------EKLEME İŞLEMİ--------------------------------------------------
 //Tablo Ekle
@@ -121,7 +118,7 @@ void addTodo(Todo newTodo, int projectId, String projectName, int columnId,
 //!!-----------------------------------SİLME İŞLEMİ--------------------------------------------------
 
 //Proje Sil
-removeProject(Project project) async {
+removeProject(int projectId, String projectName) async {
   String documentPath = await provider.getApplicationDocumentsPath();
   String path = documentPath + "\\GloryTodoDesktop\\storage.json";
   String cont = File(path).readAsStringSync();
@@ -130,8 +127,8 @@ removeProject(Project project) async {
       l.map<Project>((e) => Project.fromJson(e)).toList();
 
   for (int i = 0; i < projectList.length; i++) {
-    if ((projectList[i].projectID == project.projectID) &&
-        (projectList[i].projectName == project.projectName)) {
+    if ((projectList[i].projectID == projectId) &&
+        (projectList[i].projectName == projectName)) {
       projectList.remove(projectList[i]);
     }
   }
@@ -177,7 +174,78 @@ updateProject(Project project) async {
 //Tabloda Kolonu Güncelle
 
 //Kolondan Görev Güncelle [Bu aynı zamanda görevi tamamlama işlemi olarak kullanılabilir]
+updateTodo(int projectId, String projectName, int columnId, String columnName,
+    int todoId, String todo) async {
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + "\\GloryTodoDesktop\\storage.json";
+  String cont = File(path).readAsStringSync();
+  List<dynamic> l = jsonDecode(cont);
+  List<Project> projects = l.map<Project>((e) => Project.fromJson(e)).toList();
+  List<Todo> returnList = [];
 
+  int findedProjectIndex, findedColumnIndex, findedTodoIndex;
+
+  List<ProjectColumn> findedColumns;
+  List<Todo> findedTodos;
+  ProjectColumn sample;
+  Project sampleProj;
+  for (int i = 0; i < projects.length; i++) {
+    if ((projects[i].projectID == projectId) &&
+        (projects[i].projectName == projectName)) {
+      print("Kolonlar Bulundu ==============> " +
+          jsonEncode(projects[i].columns[0].toString()));
+      sampleProj = projects[i];
+      findedProjectIndex = projects.indexOf(projects[i]);
+      findedColumns = projects[i]
+          .columns
+          .map<ProjectColumn>((e) => ProjectColumn.fromJson(e))
+          .toList();
+
+      for (int j = 0; j < findedColumns.length; j++) {
+        if ((findedColumns[j].columnId == columnId) &&
+            (findedColumns[j].columnName == columnName)) {
+          sample = findedColumns[j];
+          findedColumnIndex = findedColumns.indexOf(findedColumns[j]);
+          findedTodos = findedColumns[j]
+              .todos
+              .map<Todo>((e) => Todo.fromJson(e))
+              .toList();
+
+          for (int k = 0; k < findedTodos.length; k++) {
+            if ((findedTodos[k].todoId == todoId) &&
+                (findedTodos[k].todo == todo)) {
+              findedTodoIndex = findedTodos.indexOf(findedTodos[k]);
+
+              findedTodos.removeAt(findedTodoIndex);
+              Todo updatedTodo = Todo(todoId, todo, true);
+              findedTodos.insert(findedTodoIndex, updatedTodo);
+              print("Bulundu ===============================>    " +
+                  findedTodos[k].todo);
+            }
+          }
+          //findedTodos.forEach((element) {});
+        }
+      }
+    }
+  }
+
+  //Nasıl yeniden bir döküman oluşturup yazdıracağım!
+  ProjectColumn k1 =
+      ProjectColumn(sample.columnId, sample.columnName, findedTodos);
+  List<ProjectColumn> updateColumns = await findedColumns;
+  updateColumns.removeAt(findedColumnIndex);
+  updateColumns.insert(findedColumnIndex, k1);
+  List<Project> updatedList = await projects;
+
+  Project p1 =
+      Project(sampleProj.projectID, sampleProj.projectName, updateColumns);
+  updatedList.removeAt(findedProjectIndex);
+  updatedList.insert(findedProjectIndex, p1);
+  String newContent = jsonEncode(updatedList);
+  File file = new File(path);
+
+  file.writeAsStringSync(newContent);
+}
 //!!-----------------------------------BULMA İŞLEMİ--------------------------------------------------
 
 Future<List<ProjectColumn>> findColumn(
