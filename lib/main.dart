@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/Pages/ProjectPage.dart';
-import 'package:glory_todo_desktop/core/Manager/Manager.dart';
+
+import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
 
 void main() {
-  //CreateFile();
+  //Setup();
   runApp(MyApp());
-
-  //createJSONFile("tablo.json");
-  //getTabloFile();
 }
 
 class MyApp extends StatelessWidget {

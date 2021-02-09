@@ -1,23 +1,28 @@
 import 'package:glory_todo_desktop/core/models/Project.dart';
 import 'dart:math';
+import 'package:glory_todo_desktop/core/models/Todo.dart';
 
 class ProjectColumn {
-  String projectUnicId = "alooo";
-  String pColumnHeader;
-  String punicColumnId;
+  int columnId;
+  String columnName;
+  List<dynamic> todos;
 
-  var rand = new Random();
-
-  ProjectColumn(this.projectUnicId,
-      this.pColumnHeader) {} //Kategori eklerken kullan çünkü id dbden veriliyor
+  ProjectColumn(this.columnId, this.columnName,
+      this.todos) {} //Kategori eklerken kullan çünkü id dbden veriliyor
 
   //Kategorileri dbden okurken kullanılır.
-  ProjectColumn.withID(this.projectUnicId, this.pColumnHeader) {
-    punicColumnId = rand.nextInt(1000000 - 10000).toString();
+  ProjectColumn.withID(this.columnId, this.columnName, this.todos) {
+    //punicColumnId = rand.nextInt(1000000 - 10000).toString();
+  }
+  ProjectColumn.addColumnContructor(this.columnId, this.columnName) {
+    todos = [];
   }
 
-  @override
-  String toString() {
-    return 'Kategori{kategoriID: $projectUnicId, kategoriBaslik: $pColumnHeader}';
+  factory ProjectColumn.fromJson(dynamic json) {
+    return ProjectColumn(json['columnId'], json['columnName'],
+        json['todos'] /*Burada Casting vardı .cast<Todo>() */);
   }
+
+  Map<String, dynamic> toJson() =>
+      {'columnId': columnId, 'columnName': columnName, 'todos': todos};
 }

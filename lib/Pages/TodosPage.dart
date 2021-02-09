@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:glory_todo_desktop/core/Manager/Manager.dart';
+import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
 import 'package:glory_todo_desktop/core/components/ColumnWidget.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'dart:io';
 import 'package:glory_todo_desktop/core/components/Table.dart';
+import 'package:glory_todo_desktop/core/models/Todo.dart';
 
 class TodosPage extends StatefulWidget {
   bool isNight;
   String projectName;
-  String projectUnicId;
-  TodosPage(this.isNight, this.projectName, this.projectUnicId);
+  int projectId;
+  String projecName;
+  TodosPage(this.isNight, this.projectName, this.projectId, this.projecName);
 
   @override
   _TodosPageState createState() => _TodosPageState();
@@ -18,10 +20,13 @@ class TodosPage extends StatefulWidget {
 class _TodosPageState extends State<TodosPage> {
   var kontroller = TextEditingController();
   Future<List<ProjectColumn>> kolonListe;
+
   @override
   Widget build(BuildContext context) {
+    print("Todos Page projectName => " + widget.projecName);
     int myIndex = 0;
-    kolonListe = findProjectColumns(widget.projectName);
+    kolonListe = findColumn(widget.projectId,
+        widget.projecName); //Buraya JSON üzerinden bulma fonksiyonu gelecek.
     kolonListe.then((value) => print("Uzunluk   " + value.toString()));
     return Scaffold(
         appBar: AppBar(
@@ -92,13 +97,15 @@ class _TodosPageState extends State<TodosPage> {
                               color: Colors.green.shade400,
                               onPressed: () {
                                 setState(() {
-                                  WriteColumn(new ProjectColumn.withID(
-                                    widget
-                                        .projectName, //Burayı unic id olarak verince null düşüyor ve soruna neden oluyor
-                                    kontroller.text,
-                                  ));
+                                  addColumn(
+                                      new ProjectColumn.addColumnContructor(
+                                          3, kontroller.text),
+                                      widget.projectId,
+                                      widget.projecName);
 
                                   //tables = readColumns();
+                                  kolonListe = findColumn(
+                                      widget.projectId, widget.projecName);
                                   kontroller.clear();
                                   Navigator.pop(context);
                                 });
@@ -130,18 +137,21 @@ class _TodosPageState extends State<TodosPage> {
                   //print("SONUC : " + snapshot.data[0]);
                   List<ProjectColumn> projects = snapshot.data ?? [];
                   if (projects.length > 0) {
-                    print("Column : " + projects[0].pColumnHeader);
+                    print("Column : " + projects[0].columnName);
 
                     return ListView.builder(
-                      key: ValueKey(projects[myIndex].pColumnHeader),
+                      key: ValueKey(projects[myIndex].columnName),
                       scrollDirection: Axis.horizontal,
                       itemCount: projects.length,
                       itemBuilder: (BuildContext context, int index) {
                         //Buradaki Tablo Widget Column Widget İle Değiştirilecek.
                         return new ColumnWidget(
                             widget.isNight,
-                            projects[index].pColumnHeader,
-                            projects[index].projectUnicId);
+                            projects[index].columnName,
+                            widget.projectId,
+                            widget.projectName,
+                            projects[index].columnId,
+                            projects[index].columnName);
                         //print("YAZ :=> " + data.toString());
                       },
                     );

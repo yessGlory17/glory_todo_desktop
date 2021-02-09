@@ -1,15 +1,19 @@
 import 'dart:math';
 
-class Todo {
-  String columnUnicId;
-  String todo;
-  bool isCheck = false;
-  String todoId;
-  var rand = new Random();
-  Todo(this.columnUnicId, this.todo) {}
+import 'package:glory_todo_desktop/Pages/TodosPage.dart';
 
-  //Dosyaya yazılırken bu kullanılacak. Dosyadan çağrılırken diğeri kullanılacak.
-  Todo.withId(this.columnUnicId, this.todo) {
-    todoId = rand.nextInt(1000000 - 10000).toString();
+class Todo {
+  int todoId;
+  String todo;
+  bool isCheck;
+  var rand = new Random();
+  Todo(this.todoId, this.todo, this.isCheck) {}
+
+  factory Todo.fromJson(dynamic json) {
+    //print("Tip : " + json['tabloKolonlari'].toString());
+    return Todo(json['todoId'], json['todo'], json['isCheck']);
   }
+
+  Map<String, dynamic> toJson() =>
+      {'todoId': todoId, 'todo': todo, 'isCheck': isCheck};
 }

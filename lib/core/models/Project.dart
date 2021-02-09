@@ -2,20 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'dart:math';
 
 class Project {
-  String projectID;
-  String projectHeader;
-  String projectUnicId;
-  List<Column> columns = new List<Column>(5);
-  var rand = new Random();
-  Project(this.projectID,
-      this.projectHeader) {} //Kategori eklerken kullan çünkü id dbden veriliyor
+  int projectID;
+  String projectName;
+  List<dynamic> columns;
 
-  Project.withId(this.projectID, this.projectHeader) {
-    projectUnicId = rand.nextInt(1000000 - 10000).toString();
+  Project(this.projectID, this.projectName,
+      this.columns) {} //Kategori eklerken kullan çünkü id dbden veriliyor
+
+  Project.withId(this.projectID, this.projectName, this.columns) {}
+
+  factory Project.fromJson(dynamic json) {
+    print("Tip : " + json['tabloKolonlari'].toString());
+    return Project(json['projectID'], json['projectName'], json['columns']);
   }
 
-  @override
-  String toString() {
-    return 'Kategori{kategoriID: $projectID, kategoriBaslik: $projectHeader}';
-  }
+  Map<String, dynamic> toJson() =>
+      {'projectID': projectID, 'projectName': projectName, 'columns': columns};
 }

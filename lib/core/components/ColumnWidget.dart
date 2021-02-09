@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/Pages/TodosPage.dart';
-import 'package:glory_todo_desktop/core/Manager/Manager.dart';
+import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
 import 'package:glory_todo_desktop/core/components/TodoWidget.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
@@ -10,15 +10,17 @@ import 'package:glory_todo_desktop/core/models/Todo.dart';
 
   BU SAYFADA KOLONLAR VE HER KOLONA AİT GÖREVLER YER ALIYOR.
 
-
  */
 
 class ColumnWidget extends StatefulWidget {
   bool isNight;
   String tableHeader;
-  String tableUnicId;
-  ColumnWidget(this.isNight, this.tableHeader, this.tableUnicId);
-  Project n = new Project("1", "test");
+  int columnId;
+  String columnName;
+  int projectId;
+  String projectName;
+  ColumnWidget(this.isNight, this.tableHeader, this.projectId, this.projectName,
+      this.columnId, this.columnName);
 
   @override
   _ColumnWidgetState createState() => _ColumnWidgetState();
@@ -28,7 +30,10 @@ class _ColumnWidgetState extends State<ColumnWidget> {
   var gorevEklemeKontrol = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    Future<List<Todo>> gorevlerListe = findColumnTodos(widget.tableHeader);
+    Future<List<Todo>> gorevlerListe = findTodos(widget.projectId,
+        widget.projectName, widget.columnId, widget.columnName);
+
+    //findColumnTodos(widget.tableUnicId); //widget.tableHeader
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       width: 300,
@@ -74,6 +79,7 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                               listem[index].isCheck, widget.isNight);
                         });
                   } else {
+                    print("Herhangi bir görev bulunamadı!");
                     return Center(
                         child: Text(
                       "Herhangi bir görev yok!",
@@ -122,13 +128,24 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                                     color: Colors.green.shade400,
                                     onPressed: () {
                                       setState(() {
-                                        WriteTodo(Todo.withId(
-                                            widget.tableHeader,
-                                            gorevEklemeKontrol.text));
+                                        // WriteTodo(Todo(
+                                        //     3, gorevEklemeKontrol.text, false));
 
-                                        gorevlerListe =
-                                            findColumnTodos(widget.tableHeader);
+                                        // gorevlerListe =
+                                        //     findColumnTodos(widget.tableHeader);
+                                        addTodo(
+                                            Todo(1, gorevEklemeKontrol.text,
+                                                false),
+                                            widget.projectId,
+                                            widget.projectName,
+                                            widget.columnId,
+                                            widget.columnName);
 
+                                        gorevlerListe = findTodos(
+                                            widget.projectId,
+                                            widget.projectName,
+                                            widget.columnId,
+                                            widget.columnName);
                                         gorevEklemeKontrol.clear();
                                         Navigator.pop(context);
                                       });
@@ -146,27 +163,6 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                           });
                     }); //SetState sonu
                   })),
-          //BURASI PROGRESS BAR
-          // Container(
-          //   width: 200,
-          //   margin: EdgeInsets.symmetric(vertical: 10),
-          //   // decoration: BoxDecoration(
-          //   //   boxShadow: [
-          //   //     BoxShadow(
-          //   //       color: Color(0x738ABFC7),
-
-          //   //       blurRadius: 1,
-          //   //       offset: Offset(0, 2), // changes position of shadow
-          //   //     ),
-          //   //   ],
-          //   // ),
-          //   child: LinearProgressIndicator(
-          //     value: 0.5,
-          //     backgroundColor: Color(0x4D131111),
-          //     minHeight: 6,
-          //     valueColor: AlwaysStoppedAnimation<Color>(Colors.lightGreen),
-          //   ),
-          // ),
         ],
       ),
     );

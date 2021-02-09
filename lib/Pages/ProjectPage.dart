@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:glory_todo_desktop/core/Manager/Manager.dart';
 import 'package:glory_todo_desktop/core/components/Table.dart';
+import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'dart:convert';
-
+import 'package:glory_todo_desktop/core/models/Todo.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
+import 'dart:math';
+import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
 
 class ProjectPage extends StatefulWidget {
   @override
@@ -14,7 +16,7 @@ class _ProjectPageState extends State<ProjectPage> {
   bool isNight = true;
   Color geceArkaPlan = Colors.black;
   Color geceOnPlan = Color(0xFF212121);
-  Future<List<Project>> tables = read();
+  Future<List<Project>> tables = readProjects();
 
   var projeBaslik = TextEditingController();
   @override
@@ -73,10 +75,22 @@ class _ProjectPageState extends State<ProjectPage> {
                             color: Colors.green.shade400,
                             onPressed: () {
                               setState(() {
-                                WriteTablo(
-                                    new Project.withId("1", projeBaslik.text));
+                                addProject(new Project(
+                                    1,
+                                    projeBaslik.text,
+                                    List.generate(
+                                        0,
+                                        (index) => ProjectColumn(
+                                            1,
+                                            "",
+                                            List.generate(
+                                                0,
+                                                (index) =>
+                                                    Todo(1, "", false))))));
 
-                                tables = read();
+                                tables = readProjects();
+                                print("T ================>    " +
+                                    tables.toString());
                                 projeBaslik.clear();
                                 Navigator.pop(context);
                               });
@@ -105,8 +119,9 @@ class _ProjectPageState extends State<ProjectPage> {
                 builder: (context, snapshot) {
                   //print("SONUC : " + snapshot.data[0]);
                   List<Project> projects = snapshot.data ?? [];
+                  print("PROJELER => " + projects.toString());
                   if (projects.length > 0) {
-                    print("PROJECT : " + projects[0].projectHeader);
+                    print("PROJECT : " + projects[0].projectName);
                   }
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -114,8 +129,9 @@ class _ProjectPageState extends State<ProjectPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return new TabloWidget(
                           isNight,
-                          projects[index].projectHeader,
-                          projects[index].projectUnicId);
+                          projects[index].projectName,
+                          projects[index].projectID,
+                          projects[index].projectName);
                       //print("YAZ :=> " + data.toString());
                     },
                   );
@@ -124,5 +140,10 @@ class _ProjectPageState extends State<ProjectPage> {
             )
           ],
         ));
+  }
+
+  int _randomId() {
+    var rand = Random().nextInt(1000000 - 10000);
+    return rand;
   }
 }
