@@ -27,6 +27,12 @@ Basic and Primitive Flutter Desktop Project!
   - Edit Project Name ✓
   - Edit Column Name
   
+### 0.3.0
+ > Target Date 20.02.2021
+  - Progressbar for Projects
+  - Reorderable Columns
+  
+  
 ## Getting Started
 
 This project is a starting point for a Flutter application.
