@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="https://github.com/yessGlory17/glory_todo_desktop/blob/main/assets/logo.png" width="200" height="150" />
+</p>
+
+
 # Glory Todo Desktop
 
 Basic and Primitive Flutter Desktop Project!
