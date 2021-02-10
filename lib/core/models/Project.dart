@@ -12,7 +12,7 @@ class Project {
   Project.withId(this.projectID, this.projectName, this.columns) {}
 
   factory Project.fromJson(dynamic json) {
-    print("Tip : " + json['tabloKolonlari'].toString());
+    //print("Tip : " + json['tabloKolonlari'].toString());
     return Project(json['projectID'], json['projectName'], json['columns']);
   }
 

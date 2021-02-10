@@ -43,6 +43,7 @@ class _ColumnWidgetState extends State<ColumnWidget> {
 
     //findColumnTodos(widget.tableUnicId); //widget.tableHeader
     return Container(
+      key: ValueKey(widget.projectName),
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       width: 300,
       constraints: BoxConstraints(

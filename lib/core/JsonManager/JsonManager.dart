@@ -7,6 +7,16 @@ import 'dart:convert';
 
 final PathProviderWindows provider = PathProviderWindows();
 //!!-----------------------------------OLUŞTURMA İŞLEMİ--------------------------------------------------
+
+void ExistJson() async {
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + "\\GloryTodoDesktop\\storage.json";
+
+  if (!await File(path).exists()) {
+    Setup();
+  }
+}
+
 //Bertilen Adresde Json Dosyası oluşturma
 void Setup() async {
   String documentPath = await provider.getApplicationDocumentsPath();
@@ -259,8 +269,10 @@ Future<List<ProjectColumn>> findColumn(
   for (int i = 0; i < projects.length; i++) {
     if ((projects[i].projectID == projectId) &&
         (projects[i].projectName == projectName)) {
-      print("Kolonlar Bulundu ==============> " +
-          jsonEncode(projects[i].columns[0].toString()));
+      // if (projects.length > 0) {
+      //   print("Kolonlar Bulundu ==============> " +
+      //       jsonEncode(projects[i].columns[0].toString()));
+      // }
 
       List<ProjectColumn> findedColumns = projects[i]
           .columns
@@ -313,4 +325,73 @@ Future<List<Todo>> findTodos(
   }
 
   return returnList;
+}
+
+//!!-----------------------------------SIRALAMA İŞLEMİ--------------------------------------------------
+
+//Proje Listesini al
+//İndexine göre sırala
+Future<void> sortProjects(oldIndex, newIndex) async {
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + "\\GloryTodoDesktop\\storage.json";
+  String cont = File(path).readAsStringSync();
+  List<dynamic> l = jsonDecode(cont);
+  List<Project> projectList =
+      l.map<Project>((e) => Project.fromJson(e)).toList();
+
+  if (projectList.length >= oldIndex && projectList.length >= newIndex) {
+    Project newIndexProject = projectList[newIndex];
+    Project oldIndexProject = projectList[oldIndex];
+
+    projectList.removeAt(newIndex);
+    projectList.insert(newIndex, oldIndexProject);
+    projectList.removeAt(oldIndex);
+    projectList.insert(oldIndex, newIndexProject);
+  }
+  List<dynamic> updatedList = projectList;
+  String newContent = jsonEncode(updatedList);
+  File file = new File(path);
+
+  file.writeAsStringSync(newContent);
+}
+
+//!!-----------------------------------GÖREVLERİ SAYMA İŞLEMİ--------------------------------------------------
+
+Future<List<int>> countTodos(int projectId, String projectName) async {
+  int checkedTodoCounter = 0;
+  int noneCheckedTodoCounter = 0;
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + "\\GloryTodoDesktop\\storage.json";
+  String cont = File(path).readAsStringSync();
+  List<dynamic> l = jsonDecode(cont);
+  List<Project> projects = l.map<Project>((e) => Project.fromJson(e)).toList();
+  List<Todo> returnList = [];
+  for (int i = 0; i < projects.length; i++) {
+    if ((projects[i].projectID == projectId) &&
+        (projects[i].projectName == projectName)) {
+      List<ProjectColumn> findedColumns = projects[i]
+          .columns
+          .map<ProjectColumn>((e) => ProjectColumn.fromJson(e))
+          .toList();
+
+      for (int j = 0; j < findedColumns.length; j++) {
+        List<Todo> findedTodos =
+            findedColumns[j].todos.map<Todo>((e) => Todo.fromJson(e)).toList();
+        //returnList.add()
+
+        for (int y = 0; y < findedTodos.length; y++) {
+          if (findedTodos[y].isCheck == true) {
+            checkedTodoCounter++;
+          } else {
+            noneCheckedTodoCounter++;
+          }
+        }
+
+        //findedTodos.forEach((element) {});
+
+      }
+    }
+  }
+  List<int> todoCounterList = [checkedTodoCounter, noneCheckedTodoCounter];
+  return todoCounterList;
 }

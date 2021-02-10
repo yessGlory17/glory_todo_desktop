@@ -18,6 +18,7 @@ class _ProjectPageState extends State<ProjectPage> {
   Color geceOnPlan = Color(0xFF212121);
 
   var projeBaslik = TextEditingController();
+  int tablesIndexCount = 0;
   Future<List<Project>> tables = readProjects();
 
   void updateProjectsWidgets() {
@@ -31,28 +32,35 @@ class _ProjectPageState extends State<ProjectPage> {
     // TODO: implement initState
     super.initState();
     tables = readProjects();
+
+    tables.then((value) => tablesIndexCount = value.length);
   }
 
   @override
   Widget build(BuildContext context) {
+    double gridCount = MediaQuery.of(context).size.width / 300;
     print("PROJE SAYFASIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
     return Scaffold(
         appBar: AppBar(
-          elevation: 0.4,
-          title: Text(
-            "Glory Todo Desktop",
-            style: TextStyle(
-              fontFamily: "Roboto",
-              fontWeight: FontWeight.w200,
-              color: isNight ? Colors.white : Color(0xFF212121),
-            ),
+          elevation: 0.2,
+          title: Image.asset(
+            "assets/logo.png",
+            width: 35,
+            fit: BoxFit.contain,
+            isAntiAlias: true,
           ),
-          backgroundColor: isNight ? Color(0xFF212121) : Colors.white,
+          backgroundColor: isNight ? Color(0xFF141518) : Colors.white,
           actions: [
             IconButton(
                 icon: Icon(
+                  Icons.settings,
+                  color: isNight ? Colors.white54 : Colors.black54,
+                ),
+                onPressed: () {}),
+            IconButton(
+                icon: Icon(
                   Icons.nightlight_round,
-                  color: isNight ? Colors.white : Colors.yellow.shade300,
+                  color: isNight ? Colors.white54 : Colors.yellow.shade300,
                 ),
                 onPressed: () {
                   setState(() {
@@ -61,10 +69,18 @@ class _ProjectPageState extends State<ProjectPage> {
                 })
           ],
         ),
-        backgroundColor: isNight ? Colors.black : Color(0xFFE3E6EB),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Color(0xFF212121),
-          child: Icon(Icons.add),
+        backgroundColor: Colors
+            .transparent, //isNight ? Color(0xFF191b1f) : Color(0xFFE3E6EB),
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Color(0xFF0DC472),
+          icon: Icon(Icons.add),
+          label: Text(
+            "Create",
+            style: TextStyle(
+                fontFamily: "Roboto",
+                fontWeight: FontWeight.w400,
+                fontSize: 18),
+          ),
           onPressed: () {
             setState(() {
               showDialog(
@@ -91,7 +107,7 @@ class _ProjectPageState extends State<ProjectPage> {
                             onPressed: () {
                               setState(() {
                                 addProject(new Project(
-                                    1,
+                                    tablesIndexCount + 1,
                                     projeBaslik.text,
                                     List.generate(
                                         0,
@@ -104,6 +120,8 @@ class _ProjectPageState extends State<ProjectPage> {
                                                     Todo(1, "", false))))));
 
                                 tables = readProjects();
+                                tables.then(
+                                    (value) => tablesIndexCount = value.length);
                                 print("T ================>    " +
                                     tables.toString());
                                 projeBaslik.clear();
@@ -124,38 +142,44 @@ class _ProjectPageState extends State<ProjectPage> {
             });
           },
         ),
-        body: Row(
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 150,
-              child: FutureBuilder(
-                future: tables,
-                builder: (context, snapshot) {
-                  //print("SONUC : " + snapshot.data[0]);
-                  List<Project> projects = snapshot.data ?? [];
-                  print("PROJELER => " + projects.toString());
-                  if (projects.length > 0) {
-                    print("PROJECT : " + projects[0].projectName);
-                  }
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: projects.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return new TabloWidget(
-                          isNight,
-                          projects[index].projectName,
-                          projects[index].projectID,
-                          projects[index].projectName,
-                          updateProjectsWidgets);
-                      //print("YAZ :=> " + data.toString());
-                    },
-                  );
-                },
-              ),
-            )
-          ],
-        ));
+        body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                  Color(0xFF141518),
+                  Color(0xFF191b1f),
+                ])),
+            child: FutureBuilder(
+              future: tables,
+              builder: (context, snapshot) {
+                //print("SONUC : " + snapshot.data[0]);
+                List<Project> projects = snapshot.data ?? [];
+                print("PROJELER => " + projects.toString());
+                if (projects.length > 0) {
+                  print("PROJECT : " + projects[0].projectName);
+                  tables.then((value) => tablesIndexCount = value.length);
+                }
+                return GridView.builder(
+                  itemCount: projects.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: gridCount.round(),
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return new TabloWidget(
+                        isNight,
+                        projects[index].projectName,
+                        projects[index].projectID,
+                        projects[index].projectName,
+                        updateProjectsWidgets);
+                    //print("YAZ :=> " + data.toString());
+                  },
+                );
+              },
+            )));
   }
 
   int _randomId() {

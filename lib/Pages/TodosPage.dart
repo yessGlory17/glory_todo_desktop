@@ -32,6 +32,7 @@ class _TodosPageState extends State<TodosPage> {
     kolonListe.then((value) => print("Uzunluk   " + value.toString()));
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: widget.isNight ? Color(0xFF141518) : Colors.white,
           leading: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_outlined,
@@ -49,7 +50,7 @@ class _TodosPageState extends State<TodosPage> {
             ),
           ),
           elevation: 0.4,
-          backgroundColor: widget.isNight ? Color(0xFF212121) : Colors.white,
+          //widget.isNight ? Color(0xFF141518) : Colors.white,
           actions: [
             IconButton(
               icon: Icon(Icons.delete, color: Colors.redAccent),
@@ -73,9 +74,10 @@ class _TodosPageState extends State<TodosPage> {
                 })
           ],
         ),
-        backgroundColor: widget.isNight ? Colors.black : Color(0xFFE3E6EB),
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
+        backgroundColor: Colors.white,
+        floatingActionButton: FloatingActionButton.extended(
+            icon: Icon(Icons.add),
+            label: Text("New"),
             onPressed: () {
               setState(() {
                 showDialog(
@@ -132,53 +134,63 @@ class _TodosPageState extends State<TodosPage> {
                     });
               });
             }),
-        body: Row(
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              constraints: BoxConstraints(
-                minHeight: 200,
-                maxHeight: MediaQuery.of(context).size.height - 50,
-              ),
-              child: FutureBuilder(
-                future: kolonListe ?? [],
-                builder: (context, snapshot) {
-                  //print("SONUC : " + snapshot.data[0]);
-                  List<ProjectColumn> projects = snapshot.data ?? [];
-                  if (projects.length > 0) {
-                    print("Column : " + projects[0].columnName);
+        body: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                Color(0xFF141518),
+                Color(0xFF191b1f),
+              ])),
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width,
+                constraints: BoxConstraints(
+                  minHeight: 200,
+                  maxHeight: MediaQuery.of(context).size.height - 50,
+                ),
+                child: FutureBuilder(
+                  future: kolonListe ?? [],
+                  builder: (context, snapshot) {
+                    //print("SONUC : " + snapshot.data[0]);
+                    List<ProjectColumn> projects = snapshot.data ?? [];
+                    if (projects.length > 0) {
+                      print("Column : " + projects[0].columnName);
 
-                    return ListView.builder(
-                      key: ValueKey(projects[myIndex].columnName),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: projects.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        //Buradaki Tablo Widget Column Widget İle Değiştirilecek.
-                        return new ColumnWidget(
-                            widget.isNight,
-                            projects[index].columnName,
-                            widget.projectId,
-                            widget.projectName,
-                            projects[index].columnId,
-                            projects[index].columnName);
-                        //print("YAZ :=> " + data.toString());
-                      },
-                    );
-                  } else {
-                    return new Center(
-                      child: Text(
-                        "Herhangi bir kolon bulunamadı!",
-                        style: TextStyle(
-                            color: widget.isNight
-                                ? Colors.white60
-                                : Colors.black87),
-                      ),
-                    );
-                  }
-                },
-              ),
-            )
-          ],
+                      return ListView.builder(
+                        key: ValueKey(projects[myIndex].columnName),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: projects.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          //Buradaki Tablo Widget Column Widget İle Değiştirilecek.
+                          return new ColumnWidget(
+                              widget.isNight,
+                              projects[index].columnName,
+                              widget.projectId,
+                              widget.projectName,
+                              projects[index].columnId,
+                              projects[index].columnName);
+                          //print("YAZ :=> " + data.toString());
+                        },
+                      );
+                    } else {
+                      return new Center(
+                        child: Text(
+                          "Herhangi bir kolon bulunamadı!",
+                          style: TextStyle(
+                              color: widget.isNight
+                                  ? Colors.white60
+                                  : Colors.black87),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              )
+            ],
+          ),
         ));
   }
 
