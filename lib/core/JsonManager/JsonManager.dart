@@ -110,9 +110,14 @@ void addTodo(Todo newTodo, int projectId, String projectName, int columnId,
           .toList();
 
       for (int j = 0; j < findedColumns.length; j++) {
-        Todo addTodo =
-            Todo(findedColumns[j].todos.length + 1, newTodo.todo, false);
-        findedColumns[j].todos.add(addTodo);
+        if ((findedColumns[j].columnId == columnId) &&
+            (findedColumns[j].columnName == columnName)) {
+          Todo addTodo =
+              Todo(findedColumns[j].todos.length + 1, newTodo.todo, false);
+          if (!findedColumns.contains(addTodo)) {
+            findedColumns[j].todos.add(addTodo);
+          }
+        }
       }
       //element.columns.add(addColumn as dynamic);
       print("Görev Eklendi!!!");
@@ -167,8 +172,8 @@ updateProject(Project project) async {
   for (int i = 0; i < projectList.length; i++) {
     if (projectList[i].projectID == project.projectID) {
       int findedIndex = projectList.indexOf(projectList[i]);
-      Project newProject = Project(
-          projectList[i].projectID, project.projectName, project.columns);
+      Project newProject = Project(projectList[i].projectID,
+          project.projectName, projectList[i].columns);
       projectList.removeAt(findedIndex);
 
       projectList.insert(findedIndex, newProject);
@@ -225,9 +230,9 @@ updateTodo(int projectId, String projectName, int columnId, String columnName,
             if ((findedTodos[k].todoId == todoId) &&
                 (findedTodos[k].todo == todo)) {
               findedTodoIndex = findedTodos.indexOf(findedTodos[k]);
-
+              bool isNewCheck = !findedTodos[k].isCheck;
               findedTodos.removeAt(findedTodoIndex);
-              Todo updatedTodo = Todo(todoId, todo, true);
+              Todo updatedTodo = Todo(todoId, todo, isNewCheck);
               findedTodos.insert(findedTodoIndex, updatedTodo);
               print("Bulundu ===============================>    " +
                   findedTodos[k].todo);

@@ -9,7 +9,9 @@ class Project {
   Project(this.projectID, this.projectName,
       this.columns) {} //Kategori eklerken kullan çünkü id dbden veriliyor
 
-  Project.withId(this.projectID, this.projectName, this.columns) {}
+  Project.addNew(this.projectID, this.projectName) {
+    columns = [];
+  }
 
   factory Project.fromJson(dynamic json) {
     //print("Tip : " + json['tabloKolonlari'].toString());

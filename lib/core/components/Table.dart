@@ -69,11 +69,11 @@ class _TabloWidgetState extends State<TabloWidget> {
               BoxShadow(
                 color: widget.isNight ? Colors.black26 : Colors.grey.shade300,
 
-                blurRadius: 10,
+                blurRadius: 5,
                 offset: Offset(0, 2), // changes position of shadow
               ),
             ],
-            color: widget.isNight ? Color(0xFF1E1F22) : Colors.white,
+            color: widget.isNight ? Color(0xFF1c1d21) : Colors.white,
             borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: <Widget>[
@@ -91,7 +91,7 @@ class _TabloWidgetState extends State<TabloWidget> {
               width: 200,
               margin: EdgeInsets.symmetric(vertical: 5),
               child: LinearProgressIndicator(
-                value: 0, //progresValue != null ? progresValue : 0.0,
+                value: .8, //progresValue != null ? progresValue : 0.0,
                 backgroundColor: Color(0x4D131111),
                 minHeight: 6,
                 valueColor:

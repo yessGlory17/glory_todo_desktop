@@ -5,12 +5,14 @@ import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'dart:io';
 import 'package:glory_todo_desktop/core/components/Table.dart';
 import 'package:glory_todo_desktop/core/models/Todo.dart';
+import 'package:glory_todo_desktop/core/models/Project.dart';
 
 class TodosPage extends StatefulWidget {
   bool isNight;
   String projectName;
   int projectId;
   String projecName;
+
   final Function() updateProjectWidgets;
   TodosPage(this.isNight, this.projectName, this.projectId, this.projecName,
       this.updateProjectWidgets);
@@ -22,6 +24,22 @@ class TodosPage extends StatefulWidget {
 class _TodosPageState extends State<TodosPage> {
   var kontroller = TextEditingController();
   Future<List<ProjectColumn>> kolonListe;
+  int kolonSayac = 0;
+  String newProjectName;
+  var projeAdiDuzenlemeKontroller = TextEditingController();
+
+  void updateColumns() {
+    setState(() {
+      kolonListe = findColumn(widget.projectId, widget.projecName);
+    });
+  }
+
+  void back() {
+    setState(() {
+      widget.updateProjectWidgets();
+      Navigator.pop(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +70,65 @@ class _TodosPageState extends State<TodosPage> {
           elevation: 0.4,
           //widget.isNight ? Color(0xFF141518) : Colors.white,
           actions: [
+            IconButton(
+              icon: Icon(Icons.edit),
+              color: widget.isNight ? Colors.white54 : Colors.black54,
+              onPressed: () {
+                setState(() {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return new AlertDialog(
+                          title: Text(
+                            "Proje Adını Düzenle",
+                            style: TextStyle(
+                                color: widget.isNight
+                                    ? Colors.white
+                                    : Colors.black),
+                          ),
+                          content: TextFormField(
+                            controller: projeAdiDuzenlemeKontroller,
+                            decoration: InputDecoration(
+                                hintText: widget.projecName,
+                                hintStyle: TextStyle(
+                                    color: widget.isNight
+                                        ? Colors.white
+                                        : Colors.black)),
+                          ),
+                          backgroundColor: widget.isNight
+                              ? Color(0xFF212121)
+                              : Color(0xFFf1f2f6),
+                          actions: [
+                            Center(
+                              child: FlatButton(
+                                color: Colors.green.shade400,
+                                onPressed: () {
+                                  setState(() {
+                                    updateProject(Project.addNew(
+                                        widget.projectId,
+                                        projeAdiDuzenlemeKontroller.text));
+                                    //tables = readColumns();
+                                    widget.updateProjectWidgets();
+                                    updateColumns();
+                                    projeAdiDuzenlemeKontroller.clear();
+                                    Navigator.pop(context);
+                                    back();
+                                  });
+                                },
+                                child: Container(
+                                  child: Text(
+                                    "Oluştur",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      });
+                });
+              },
+            ),
             IconButton(
               icon: Icon(Icons.delete, color: Colors.redAccent),
               onPressed: () {
@@ -110,7 +187,7 @@ class _TodosPageState extends State<TodosPage> {
                                 setState(() {
                                   addColumn(
                                       new ProjectColumn.addColumnContructor(
-                                          3, kontroller.text),
+                                          kolonSayac + 1, kontroller.text),
                                       widget.projectId,
                                       widget.projecName);
 
@@ -158,7 +235,7 @@ class _TodosPageState extends State<TodosPage> {
                     List<ProjectColumn> projects = snapshot.data ?? [];
                     if (projects.length > 0) {
                       print("Column : " + projects[0].columnName);
-
+                      kolonSayac = projects.length;
                       return ListView.builder(
                         key: ValueKey(projects[myIndex].columnName),
                         scrollDirection: Axis.horizontal,

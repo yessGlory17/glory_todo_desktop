@@ -27,7 +27,10 @@ class ColumnWidget extends StatefulWidget {
 }
 
 class _ColumnWidgetState extends State<ColumnWidget> {
+  var todoTextKey = GlobalKey<FormState>();
   var gorevEklemeKontrol = TextEditingController();
+  int todoCounter = 0;
+  String todoContent;
   Future<List<Todo>> gorevlerListe;
   void updateTodoList() {
     setState(() {
@@ -58,17 +61,37 @@ class _ColumnWidgetState extends State<ColumnWidget> {
               offset: Offset(0, 2), // changes position of shadow
             ),
           ],
-          color: widget.isNight ? Color(0xFF212121) : Colors.white,
+          color: widget.isNight ? Color(0xFF1f2024) : Colors.white,
           borderRadius: BorderRadius.circular(5)),
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0),
-            child: Text(widget.tableHeader,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: widget.isNight ? Colors.white : Colors.black,
-                )),
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Stack(
+              children: <Widget>[
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Text(widget.tableHeader,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: widget.isNight ? Colors.white : Colors.black,
+                        )),
+                  ),
+                ),
+                // Positioned(
+                //   top: -10,
+                //   right: 0,
+                //   child: IconButton(
+                //     icon: Icon(
+                //       Icons.edit,
+                //       color: widget.isNight ? Colors.white54 : Colors.black54,
+                //     ),
+                //     onPressed: () {},
+                //   ),
+                // ),
+              ],
+            ),
           ),
 
           //Buraya Görevler Listesi gelmeli
@@ -80,6 +103,7 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                 builder: (context, snapshot) {
                   List<Todo> listem = snapshot.data ?? [];
                   if (listem.length > 0) {
+                    todoCounter = listem.length;
                     print("Görev :==> " + listem[0].todo);
                     return ListView.builder(
                         itemCount: listem.length,
@@ -126,14 +150,20 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                                       ? Colors.white
                                       : Colors.black),
                             ),
-                            content: TextFormField(
-                              controller: gorevEklemeKontrol,
-                              decoration: InputDecoration(
-                                  hintText: "Görevi Giriniz",
-                                  hintStyle: TextStyle(
-                                      color: widget.isNight
-                                          ? Colors.white
-                                          : Colors.black)),
+                            content: Form(
+                              key: todoTextKey,
+                              child: TextFormField(
+                                controller: gorevEklemeKontrol,
+                                validator: (value) =>
+                                    value != null ? null : "Bir görev giriniz.",
+                                onSaved: (value) => todoContent = value,
+                                decoration: InputDecoration(
+                                    hintText: "Görevi Giriniz",
+                                    hintStyle: TextStyle(
+                                        color: widget.isNight
+                                            ? Colors.white
+                                            : Colors.black)),
+                              ),
                             ),
                             backgroundColor: widget.isNight
                                 ? Color(0xFF212121)
@@ -144,21 +174,25 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                                   color: Colors.green.shade400,
                                   onPressed: () {
                                     setState(() {
-                                      addTodo(
-                                          Todo(1, gorevEklemeKontrol.text,
-                                              false),
-                                          widget.projectId,
-                                          widget.projectName,
-                                          widget.columnId,
-                                          widget.columnName);
+                                      if (todoTextKey.currentState.validate()) {
+                                        todoTextKey.currentState.save();
 
-                                      gorevlerListe = findTodos(
-                                          widget.projectId,
-                                          widget.projectName,
-                                          widget.columnId,
-                                          widget.columnName);
-                                      gorevEklemeKontrol.clear();
-                                      Navigator.pop(context);
+                                        addTodo(
+                                            Todo(todoCounter + 1,
+                                                gorevEklemeKontrol.text, false),
+                                            widget.projectId,
+                                            widget.projectName,
+                                            widget.columnId,
+                                            widget.columnName);
+
+                                        gorevlerListe = findTodos(
+                                            widget.projectId,
+                                            widget.projectName,
+                                            widget.columnId,
+                                            widget.columnName);
+                                        gorevEklemeKontrol.clear();
+                                        Navigator.pop(context);
+                                      }
                                     });
                                   },
                                   child: Container(

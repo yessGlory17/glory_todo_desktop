@@ -35,14 +35,16 @@ class _TodoWidgetState extends State<TodoWidget> {
   Widget build(BuildContext context) {
     String todo = widget.todo;
     return Card(
-      color: widget.isNight ? Colors.black : Color(0xFFf1f2f6),
+      color: widget.isNight ? Color(0xFF18191c) : Color(0xFFf1f2f6),
       child: ListTile(
+        
         leading: IconButton(
           icon: Icon(
             widget.isTodoCheck
                 ? GloryIcons.check_circle
                 : GloryIcons.circle_empty,
-            color: widget.isNight ? Colors.white60 : Colors.black87,
+            color:
+                setTodoColor(), //widget.isNight ? Colors.white60 : Colors.black87,
           ),
           onPressed: () {
             setState(() {
@@ -62,10 +64,21 @@ class _TodoWidgetState extends State<TodoWidget> {
         ),
         title: Text(
           todo,
-          style: TextStyle(
-              color: widget.isNight ? Colors.white60 : Colors.black87),
+          style: TextStyle(color: setTodoColor()),
         ),
       ),
     );
+  }
+
+  Color setTodoColor() {
+    if (widget.isNight && widget.isTodoCheck) {
+      return Colors.greenAccent[400];
+    } else if (!widget.isNight && widget.isTodoCheck) {
+      return Colors.greenAccent[400];
+    } else if (!widget.isNight && !widget.isTodoCheck) {
+      return Colors.black87;
+    } else {
+      return Colors.white60;
+    }
   }
 }
