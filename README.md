@@ -4,7 +4,7 @@ Basic and Primitive Flutter Desktop Project!
 
 ## Goal
 > My goal is to accept my inexperience without worrying about the plugin shortcomings of Flutter Desktop. Creating a simple application to solve my own problems. Because no mission app meets exactly what I need. That's why I decided to do my best. I would be very happy if you try the first decisions when I reach the release. If you like it, don't forget to give stars!
-## Screenshoot [07.02.2021]
+## Screenshoot [10.02.2021]
   ![Onboarding Screen1](https://github.com/yessGlory17/glory_todo_desktop/blob/main/screenshoots/Ekran%20Al%C4%B1nt%C4%B1s%C4%B1.JPG)
   ![Onboarding Screen1](https://github.com/yessGlory17/glory_todo_desktop/blob/main/screenshoots/Ekran%20Al%C4%B1nt%C4%B1s%C4%B12.JPG)
   ![Onboarding Screen1](https://github.com/yessGlory17/glory_todo_desktop/blob/main/screenshoots/Ekran%20Al%C4%B1nt%C4%B1s%C4%B13.JPG)
@@ -24,7 +24,7 @@ Basic and Primitive Flutter Desktop Project!
   - Remove Project ✓
   - Remove Column
   - Check Todo ✓
-  - Edit Project Name
+  - Edit Project Name ✓
   - Edit Column Name
   
 ## Getting Started
