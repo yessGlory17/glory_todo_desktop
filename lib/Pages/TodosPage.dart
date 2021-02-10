@@ -162,7 +162,7 @@ class _TodosPageState extends State<TodosPage> {
                     builder: (BuildContext context) {
                       return new AlertDialog(
                         title: Text(
-                          "Yeni Kolon Adı?",
+                          "New Column Name?",
                           style: TextStyle(
                               color:
                                   widget.isNight ? Colors.white : Colors.black),
@@ -170,7 +170,7 @@ class _TodosPageState extends State<TodosPage> {
                         content: TextFormField(
                           controller: kontroller,
                           decoration: InputDecoration(
-                              hintText: "Kolon Adını Giriniz",
+                              hintText: "New column name",
                               hintStyle: TextStyle(
                                   color: widget.isNight
                                       ? Colors.white
