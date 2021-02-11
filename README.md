@@ -19,23 +19,23 @@ Basic and Primitive Flutter Desktop Project!
 ## Todos
   ### 0.1.0
   > Target Date 10.02.2021 => Done 10.02.2021
-   - Primitive Storage ✓
-   - Basic Design ✓
-   - Create Project Page ✓
-   - Create Column Page ✓
-   - Create Todo ✓
+   - [x] Primitive Storage 
+   - [x] Basic Design 
+   - [x] Create Project Page 
+   - [x] Create Column Page 
+   - [x] Create Todo 
 ### 0.2.0
  > Target Date 15.02.2021
-  - Remove Project ✓
-  - Remove Column
-  - Check Todo ✓
-  - Edit Project Name ✓
-  - Edit Column Name
+  - [x] Remove Project
+  - [x] Remove Column
+  - [x] Check Todo
+  - [x] Edit Project Name
+  - [ ] Edit Column Name
   
 ### 0.3.0
  > Target Date 20.02.2021
-  - Progressbar for Projects
-  - Reorderable Columns
+  - [ ] Progressbar for Projects
+  - [ ] Reorderable Columns
   
   
 ## Getting Started
