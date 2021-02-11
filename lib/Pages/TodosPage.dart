@@ -14,8 +14,9 @@ class TodosPage extends StatefulWidget {
   String projecName;
 
   final Function() updateProjectWidgets;
+  final Function() updateProjectProgressBar;
   TodosPage(this.isNight, this.projectName, this.projectId, this.projecName,
-      this.updateProjectWidgets);
+      this.updateProjectWidgets, this.updateProjectProgressBar);
 
   @override
   _TodosPageState createState() => _TodosPageState();
@@ -27,6 +28,13 @@ class _TodosPageState extends State<TodosPage> {
   int kolonSayac = 0;
   String newProjectName;
   var projeAdiDuzenlemeKontroller = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.updateProjectProgressBar();
+  }
 
   void updateColumns() {
     setState(() {
@@ -113,6 +121,7 @@ class _TodosPageState extends State<TodosPage> {
                                     widget.updateProjectWidgets();
                                     updateColumns();
                                     projeAdiDuzenlemeKontroller.clear();
+                                    widget.updateProjectProgressBar();
                                     Navigator.pop(context);
                                     back();
                                   });
@@ -137,6 +146,7 @@ class _TodosPageState extends State<TodosPage> {
                 setState(() {
                   removeProject(widget.projectId, widget.projecName);
                   widget.updateProjectWidgets();
+                  widget.updateProjectProgressBar();
                   Navigator.pop(context);
                 });
               },
@@ -197,6 +207,7 @@ class _TodosPageState extends State<TodosPage> {
                                   kolonListe = findColumn(
                                       widget.projectId, widget.projecName);
                                   kontroller.clear();
+
                                   Navigator.pop(context);
                                 });
                               },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/Pages/TodosPage.dart';
+import 'package:glory_todo_desktop/core/GloryIcons/GloryIcons.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
 import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
@@ -21,10 +22,8 @@ class _TabloWidgetState extends State<TabloWidget> {
   double checkedCount = 0;
   double noneCheckedCount = 0;
   double progresValue = 0.0;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+
+  updateProgressBar() {
     countTodos(widget.projectId, widget.projectName).then((value) {
       print("GÖREV SAYISIIII ==============> " + value.toString());
       checkedCount = value[0].toDouble() != null ? value[0].toDouble() : 0;
@@ -38,10 +37,24 @@ class _TabloWidgetState extends State<TabloWidget> {
       print(
           "----------------------------Progress Bar Güncellendi!------------------------------------");
 
-      progresValue =
-          (checkedCount / (checkedCount + noneCheckedCount)) * 1 != null
-              ? (checkedCount / (checkedCount + noneCheckedCount)) * 1
-              : 0.0;
+      setState(() {
+        progresValue =
+            (checkedCount / (checkedCount + noneCheckedCount)).toDouble() !=
+                    null
+                ? (checkedCount / (checkedCount + noneCheckedCount)).toDouble()
+                : 0.0;
+      });
+
+      print("Progresbar Value ================> " + progresValue.toString());
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      updateProgressBar();
     });
   }
 
@@ -58,7 +71,8 @@ class _TabloWidgetState extends State<TabloWidget> {
                     widget.tableHeader,
                     widget.projectId,
                     widget.projectName,
-                    widget.updateProjectsW)));
+                    widget.updateProjectsW,
+                    updateProgressBar)));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -90,13 +104,7 @@ class _TabloWidgetState extends State<TabloWidget> {
             Container(
               width: 200,
               margin: EdgeInsets.symmetric(vertical: 5),
-              child: LinearProgressIndicator(
-                value: .8, //progresValue != null ? progresValue : 0.0,
-                backgroundColor: Color(0x4D131111),
-                minHeight: 6,
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(Colors.greenAccent[400]),
-              ),
+              child: checkProjectIsComplate(),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
@@ -105,5 +113,24 @@ class _TabloWidgetState extends State<TabloWidget> {
         ),
       ),
     );
+  }
+
+  setColor() {}
+
+  Widget checkProjectIsComplate() {
+    if (progresValue == 1) {
+      return Icon(
+        Icons.check,
+        color: Colors.greenAccent[400],
+        size: 40,
+      );
+    } else {
+      return LinearProgressIndicator(
+        value: progresValue.isNaN ? 0.0 : progresValue,
+        backgroundColor: Color(0x4D131111),
+        minHeight: 6,
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent[400]),
+      );
+    }
   }
 }
