@@ -97,6 +97,10 @@ class _TodosPageState extends State<TodosPage> {
                                     : Colors.black),
                           ),
                           content: TextFormField(
+                            style: TextStyle(
+                                color: widget.isNight
+                                    ? Colors.white
+                                    : Colors.black),
                             controller: projeAdiDuzenlemeKontroller,
                             decoration: InputDecoration(
                                 hintText: widget.projecName,
@@ -180,6 +184,9 @@ class _TodosPageState extends State<TodosPage> {
                                   widget.isNight ? Colors.white : Colors.black),
                         ),
                         content: TextFormField(
+                          style: TextStyle(
+                              color:
+                                  widget.isNight ? Colors.white : Colors.black),
                           controller: kontroller,
                           decoration: InputDecoration(
                               hintText: "New column name",

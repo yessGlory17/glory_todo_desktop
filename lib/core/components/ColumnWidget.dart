@@ -157,6 +157,10 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                                 validator: (value) =>
                                     value != null ? null : "Bir görev giriniz.",
                                 onSaved: (value) => todoContent = value,
+                                style: TextStyle(
+                                    color: widget.isNight
+                                        ? Colors.white
+                                        : Colors.black),
                                 decoration: InputDecoration(
                                     hintText: "Görevi Giriniz",
                                     hintStyle: TextStyle(
