@@ -40,6 +40,7 @@ class _ProjectPageState extends State<ProjectPage> {
   Widget build(BuildContext context) {
     double gridCount = MediaQuery.of(context).size.width / 300;
     print("PROJE SAYFASIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+    List<Color> backgroundColorGradient = setModeColor(isNight);
     return Scaffold(
         appBar: AppBar(
           elevation: 0.2,
@@ -49,7 +50,7 @@ class _ProjectPageState extends State<ProjectPage> {
             fit: BoxFit.contain,
             isAntiAlias: true,
           ),
-          backgroundColor: isNight ? Color(0xFF141518) : Colors.white,
+          backgroundColor: isNight ? Color(0xFF141518) : Color(0xFFedeef5),
           actions: [
             IconButton(
                 icon: Icon(
@@ -150,8 +151,9 @@ class _ProjectPageState extends State<ProjectPage> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                  Color(0xFF141518),
-                  Color(0xFF191b1f),
+                  backgroundColorGradient[0], backgroundColorGradient[1]
+                  // Color(0xFF141518),
+                  // Color(0xFF191b1f),
                 ])),
             child: FutureBuilder(
               future: tables,
@@ -185,5 +187,20 @@ class _ProjectPageState extends State<ProjectPage> {
   int _randomId() {
     var rand = Random().nextInt(1000000 - 10000);
     return rand;
+  }
+
+  List<Color> setModeColor(bool isNight) {
+    switch (isNight) {
+      case true:
+        {
+          return [Color(0xFF141518), Color(0xFF191b1f)];
+        }
+        break;
+      case false:
+        {
+          return [Color(0xFFedeef5), Color(0xFFe9eaf5)];
+        }
+        break;
+    }
   }
 }

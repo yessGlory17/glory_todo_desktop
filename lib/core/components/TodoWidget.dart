@@ -35,9 +35,8 @@ class _TodoWidgetState extends State<TodoWidget> {
   Widget build(BuildContext context) {
     String todo = widget.todo;
     return Card(
-      color: widget.isNight ? Color(0xFF18191c) : Color(0xFFf1f2f6),
+      color: widget.isNight ? Color(0xFF18191c) : Color(0xFFf5f6fc),
       child: ListTile(
-        
         leading: IconButton(
           icon: Icon(
             widget.isTodoCheck
@@ -64,7 +63,11 @@ class _TodoWidgetState extends State<TodoWidget> {
         ),
         title: Text(
           todo,
-          style: TextStyle(color: setTodoColor()),
+          style: TextStyle(
+              color: setTodoColor(),
+              decoration: widget.isTodoCheck
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none),
         ),
       ),
     );

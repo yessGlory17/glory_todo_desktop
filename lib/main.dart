@@ -4,7 +4,7 @@ import 'package:glory_todo_desktop/Pages/ProjectPage.dart';
 import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
 
 void main() {
-  //Setup();
+  ExistJson();
   runApp(MyApp());
 }
 

@@ -73,7 +73,7 @@ class _TabloWidgetState extends State<TabloWidget> {
                 offset: Offset(0, 2), // changes position of shadow
               ),
             ],
-            color: widget.isNight ? Color(0xFF1c1d21) : Colors.white,
+            color: widget.isNight ? Color(0xFF1c1d21) : Color(0xFFd7d8de),
             borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: <Widget>[

@@ -61,7 +61,7 @@ class _ColumnWidgetState extends State<ColumnWidget> {
               offset: Offset(0, 2), // changes position of shadow
             ),
           ],
-          color: widget.isNight ? Color(0xFF1f2024) : Colors.white,
+          color: widget.isNight ? Color(0xFF1f2024) : Color(0xFFd7d8de),
           borderRadius: BorderRadius.circular(5)),
       child: Column(
         children: <Widget>[

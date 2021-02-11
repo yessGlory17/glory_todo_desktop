@@ -48,9 +48,11 @@ class _TodosPageState extends State<TodosPage> {
     kolonListe = findColumn(widget.projectId,
         widget.projecName); //Buraya JSON üzerinden bulma fonksiyonu gelecek.
     kolonListe.then((value) => print("Uzunluk   " + value.toString()));
+    List<Color> backgroundColorGradient = setModeColor(widget.isNight);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: widget.isNight ? Color(0xFF141518) : Colors.white,
+          backgroundColor:
+              widget.isNight ? Color(0xFF141518) : Color(0xFFedeef5),
           leading: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_outlined,
@@ -67,7 +69,7 @@ class _TodosPageState extends State<TodosPage> {
               color: widget.isNight ? Colors.white : Color(0xFF212121),
             ),
           ),
-          elevation: 0.4,
+          elevation: 0.2,
           //widget.isNight ? Color(0xFF141518) : Colors.white,
           actions: [
             IconButton(
@@ -217,8 +219,9 @@ class _TodosPageState extends State<TodosPage> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                Color(0xFF141518),
-                Color(0xFF191b1f),
+                // Color(0xFF141518),
+                // Color(0xFF191b1f),
+                backgroundColorGradient[0], backgroundColorGradient[1]
               ])),
           child: Row(
             children: <Widget>[
@@ -279,5 +282,20 @@ class _TodosPageState extends State<TodosPage> {
     final items = kolonListe.then((value) => value.removeAt(oldInd));
 
     kolonListe.then((value) => value.insert(newInd, (items as ProjectColumn)));
+  }
+
+  List<Color> setModeColor(bool isNight) {
+    switch (isNight) {
+      case true:
+        {
+          return [Color(0xFF141518), Color(0xFF191b1f)];
+        }
+        break;
+      case false:
+        {
+          return [Color(0xFFedeef5), Color(0xFFe9eaf5)];
+        }
+        break;
+    }
   }
 }
