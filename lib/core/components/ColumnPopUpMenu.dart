@@ -5,7 +5,7 @@ class ColumnPopUpMenu extends StatefulWidget {
 
   VoidCallback edit;
   VoidCallback remove;
-
+  VoidCallback color;
   ColumnPopUpMenu(this.isNight, this.edit, this.remove);
 
   @override
@@ -44,21 +44,32 @@ class _ColumnPopUpMenuState extends State<ColumnPopUpMenu> {
   Widget build(BuildContext context) {
     bool night = widget.isNight;
     return PopupMenuButton<String>(
+      icon: Icon(
+        Icons.more_vert,
+        color: widget.isNight ? Color(0xFFd7d8de) : Color(0xFF1f2024),
+      ),
       color: widget.isNight ? Color(0xFF1f2024) : Color(0xFFd7d8de),
       onSelected: showMenuSelection,
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         const PopupMenuItem<String>(
           value: 'edit',
-          child: IconButton(
-            icon: Icon(Icons.edit),
-            //color: night ? Colors.white54 : Colors.black54,
-          ),
+          child: Center(
+              child: IconButton(
+            icon: Icon(
+              Icons.edit,
+              color: Colors.black54,
+            ),
+          )
+              //color: night ? Colors.white54 : Colors.black54,
+              ),
         ),
         const PopupMenuItem<String>(
           value: 'remove',
-          child: IconButton(
-            icon: Icon(Icons.delete),
-            color: Colors.black54,
+          child: Center(
+            child: IconButton(
+              icon: Icon(Icons.delete),
+              color: Colors.black54,
+            ),
           ),
         ),
       ],
