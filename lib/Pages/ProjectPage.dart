@@ -95,6 +95,8 @@ class _ProjectPageState extends State<ProjectPage> {
                       ),
                       content: TextFormField(
                         controller: projeBaslik,
+                        style: TextStyle(
+                            color: isNight ? Colors.white : Colors.black),
                         decoration: InputDecoration(
                             hintText: "Proje Adını Giriniz",
                             hintStyle: TextStyle(
@@ -203,7 +205,4 @@ class _ProjectPageState extends State<ProjectPage> {
         break;
     }
   }
-
-
-  
 }

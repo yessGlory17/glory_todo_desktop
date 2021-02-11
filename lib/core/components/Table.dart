@@ -4,6 +4,7 @@ import 'package:glory_todo_desktop/core/GloryIcons/GloryIcons.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
 import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
+import 'package:page_transition/page_transition.dart';
 
 class TabloWidget extends StatefulWidget {
   bool isNight;
@@ -65,8 +66,10 @@ class _TabloWidgetState extends State<TabloWidget> {
       onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => TodosPage(
+            PageTransition(
+                type: PageTransitionType.rightToLeftWithFade,
+                //alignment: Alignment.bottomRight,
+                child: TodosPage(
                     widget.isNight,
                     widget.tableHeader,
                     widget.projectId,
