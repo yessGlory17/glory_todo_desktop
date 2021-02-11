@@ -31,6 +31,7 @@ class ColumnWidget extends StatefulWidget {
 class _ColumnWidgetState extends State<ColumnWidget> {
   var todoTextKey = GlobalKey<FormState>();
   var gorevEklemeKontrol = TextEditingController();
+  var columnEditControl = TextEditingController();
   int todoCounter = 0;
   String todoContent;
   Future<List<Todo>> gorevlerListe;
@@ -50,7 +51,64 @@ class _ColumnWidgetState extends State<ColumnWidget> {
     });
   }
 
-  void edit() {}
+  void edit() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: Text(
+              "Yeni Kolon Adı?",
+              style: TextStyle(
+                  color: widget.isNight ? Colors.white : Colors.black),
+            ),
+            content: TextFormField(
+              controller: columnEditControl,
+              style: TextStyle(
+                  color: widget.isNight ? Colors.white : Colors.black),
+              decoration: InputDecoration(
+                  hintText: "Yeni Kolon Adını Giriniz",
+                  hintStyle: TextStyle(
+                      color: widget.isNight ? Colors.white : Colors.black)),
+            ),
+            backgroundColor:
+                widget.isNight ? Color(0xFF212121) : Color(0xFFf1f2f6),
+            actions: [
+              Center(
+                child: FlatButton(
+                  color: Colors.green.shade400,
+                  onPressed: () {
+                    setState(() {
+                      //updatefunc
+                      updateColumn(
+                          widget.projectId,
+                          widget.projectName,
+                          widget.columnId,
+                          widget.columnName,
+                          columnEditControl.text);
+                      widget.updateColumns();
+                      gorevlerListe = findTodos(
+                          widget.projectId,
+                          widget.projectName,
+                          widget.columnId,
+                          columnEditControl.text);
+                      widget.columnName = columnEditControl.text;
+                      columnEditControl.clear();
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: Container(
+                    child: Text(
+                      "Düzenle",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          );
+        });
+    print("Editlendi!");
+  }
 
   @override
   Widget build(BuildContext context) {
