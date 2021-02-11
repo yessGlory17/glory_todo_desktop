@@ -269,7 +269,8 @@ class _TodosPageState extends State<TodosPage> {
                               widget.projectId,
                               widget.projectName,
                               projects[index].columnId,
-                              projects[index].columnName);
+                              projects[index].columnName,
+                              updateColumns);
                           //print("YAZ :=> " + data.toString());
                         },
                       );

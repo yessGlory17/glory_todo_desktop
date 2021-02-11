@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/Pages/TodosPage.dart';
 import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
+import 'package:glory_todo_desktop/core/components/ColumnPopUpMenu.dart';
 import 'package:glory_todo_desktop/core/components/TodoWidget.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
@@ -19,8 +20,9 @@ class ColumnWidget extends StatefulWidget {
   String columnName;
   int projectId;
   String projectName;
+  final Function updateColumns;
   ColumnWidget(this.isNight, this.tableHeader, this.projectId, this.projectName,
-      this.columnId, this.columnName);
+      this.columnId, this.columnName, this.updateColumns);
 
   @override
   _ColumnWidgetState createState() => _ColumnWidgetState();
@@ -38,6 +40,17 @@ class _ColumnWidgetState extends State<ColumnWidget> {
           widget.columnId, widget.columnName);
     });
   }
+
+  void remove() {
+    removeColumn(widget.projectId, widget.projectName, widget.columnId,
+        widget.columnName);
+    print("Silindi!");
+    setState(() {
+      widget.updateColumns();
+    });
+  }
+
+  void edit() {}
 
   @override
   Widget build(BuildContext context) {
@@ -79,17 +92,11 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                         )),
                   ),
                 ),
-                // Positioned(
-                //   top: -10,
-                //   right: 0,
-                //   child: IconButton(
-                //     icon: Icon(
-                //       Icons.edit,
-                //       color: widget.isNight ? Colors.white54 : Colors.black54,
-                //     ),
-                //     onPressed: () {},
-                //   ),
-                // ),
+                Positioned(
+                  top: 5,
+                  right: 0,
+                  child: ColumnPopUpMenu(widget.isNight, edit, remove),
+                ),
               ],
             ),
           ),

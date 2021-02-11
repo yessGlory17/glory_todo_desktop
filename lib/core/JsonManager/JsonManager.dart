@@ -154,8 +154,40 @@ removeProject(int projectId, String projectName) async {
 
   file.writeAsStringSync(newContent);
 }
-//Tablodan Kolon Sil
 
+//Tablodan Kolon Sil
+removeColumn(
+    int projectId, String projectName, int columnId, String columnName) async {
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + "\\GloryTodoDesktop\\storage.json";
+  String cont = File(path).readAsStringSync();
+  List<dynamic> l = jsonDecode(cont);
+  List<Project> projectList =
+      l.map<Project>((e) => Project.fromJson(e)).toList();
+  List<ProjectColumn> findedColumns;
+  for (int i = 0; i < projectList.length; i++) {
+    if ((projectList[i].projectID == projectId) &&
+        (projectList[i].projectName == projectName)) {
+      findedColumns = projectList[i]
+          .columns
+          .map<ProjectColumn>((e) => ProjectColumn.fromJson(e))
+          .toList();
+      for (int j = 0; j < findedColumns.length; j++) {
+        if ((findedColumns[j].columnId == columnId) &&
+            (findedColumns[j].columnName == columnName)) {
+          projectList[i].columns.remove(projectList[i].columns[j]);
+        }
+      }
+      //projectList.remove(projectList[i]);
+    }
+  }
+
+  List<dynamic> removedList = projectList;
+  String newContent = jsonEncode(removedList);
+  File file = new File(path);
+
+  file.writeAsStringSync(newContent);
+}
 //Kolondan Görev Sil
 
 //!!-----------------------------------GÜNCELLEME İŞLEMİ--------------------------------------------------
