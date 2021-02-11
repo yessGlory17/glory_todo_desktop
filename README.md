@@ -25,12 +25,12 @@ Basic and Primitive Flutter Desktop Project!
    - [x] Create Column Page 
    - [x] Create Todo 
 ### 0.2.0
- > Target Date 15.02.2021
+ > Target Date 15.02.2021 => Done 11.02.2021
   - [x] Remove Project
   - [x] Remove Column
   - [x] Check Todo
   - [x] Edit Project Name
-  - [ ] Edit Column Name
+  - [x] Edit Column Name
   
 ### 0.3.0
  > Target Date 20.02.2021
