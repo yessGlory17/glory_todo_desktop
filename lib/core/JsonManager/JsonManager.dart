@@ -1,6 +1,7 @@
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
 import 'package:glory_todo_desktop/core/models/Todo.dart';
+import 'package:glory_todo_desktop/core/models/Settings.dart';
 import 'package:path_provider_windows/path_provider_windows.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -11,9 +12,13 @@ final PathProviderWindows provider = PathProviderWindows();
 void ExistJson() async {
   String documentPath = await provider.getApplicationDocumentsPath();
   String path = documentPath + "\\GloryTodoDesktop\\storage.json";
-
+  String settingsPath = documentPath + "\\GloryTodoDesktop\\settings.json";
   if (!await File(path).exists()) {
     Setup();
+  }
+
+  if (!await File(settingsPath).exists()) {
+    CreateSettingsFile();
   }
 }
 
@@ -31,6 +36,21 @@ void Setup() async {
   print("Dosya oluşturuldu");
 }
 
+void CreateSettingsFile() async {
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + "\\GloryTodoDesktop\\settings.json";
+  new File(path).createSync(recursive: true);
+
+  //Temel bir json dosyası oluştur []
+  List<Project> empty = [];
+  String emptyListToString = jsonEncode(empty);
+  File file = File(path);
+  file.writeAsStringSync(emptyListToString, mode: FileMode.append);
+  print("Dosya oluşturuldu");
+
+  addDefaultSettings();
+}
+
 //!!-----------------------------------OKUMA İŞLEMİ--------------------------------------------------
 //Proje Okuma
 Future<List<Project>> readProjects() async {
@@ -41,6 +61,22 @@ Future<List<Project>> readProjects() async {
   List<Project> liste = l.map<Project>((e) => Project.fromJson(e)).toList();
   print("LİSTEM =======> " + liste.toString());
   List<Project> dondurelecekListe = [];
+  liste.forEach((element) {
+    dondurelecekListe.add(element);
+  });
+
+  return dondurelecekListe;
+}
+
+//Read Settings
+Future<List<Settings>> readSettings() async {
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + "\\GloryTodoDesktop\\settings.json";
+  String cont = File(path).readAsStringSync();
+  List<dynamic> l = jsonDecode(cont);
+  List<Settings> liste = l.map<Settings>((e) => Settings.fromJson(e)).toList();
+  print("LİSTEM =======> " + liste.toString());
+  List<Settings> dondurelecekListe = [];
   liste.forEach((element) {
     dondurelecekListe.add(element);
   });
@@ -123,6 +159,24 @@ void addTodo(Todo newTodo, int projectId, String projectName, int columnId,
       print("Görev Eklendi!!!");
     }
   });
+
+  String newContent = jsonEncode(liste);
+  File file = new File(path);
+  file.writeAsStringSync(newContent);
+
+  print("Eklendi!!!");
+}
+
+//Add Default Settings
+void addDefaultSettings() async {
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + "\\GloryTodoDesktop\\settings.json";
+  String cont = File(path).readAsStringSync();
+  List<dynamic> l = jsonDecode(cont);
+  var liste = List<Settings>();
+  //liste = l.map<Settings>((e) => Settings.fromJson(e)).toList();
+
+  liste.add(Settings("Dark", "English"));
 
   String newContent = jsonEncode(liste);
   File file = new File(path);
@@ -362,6 +416,9 @@ updateTodo(int projectId, String projectName, int columnId, String columnName,
 
   file.writeAsStringSync(newContent);
 }
+
+//Update Settings
+
 //!!-----------------------------------BULMA İŞLEMİ--------------------------------------------------
 
 Future<List<ProjectColumn>> findColumn(
@@ -500,4 +557,54 @@ Future<List<int>> countTodos(int projectId, String projectName) async {
   }
   List<int> todoCounterList = [checkedTodoCounter, noneCheckedTodoCounter];
   return todoCounterList;
+}
+
+//!Settings Set Functions
+
+void setChangeColorMode() async {
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + "\\GloryTodoDesktop\\settings.json";
+  String cont = File(path).readAsStringSync();
+  List<dynamic> l = jsonDecode(cont);
+  List<Settings> settingsList =
+      l.map<Settings>((e) => Settings.fromJson(e)).toList();
+  Settings newSettings;
+  if (settingsList[0].colorMode == "Dark") {
+    newSettings = Settings("Light", settingsList[0].language);
+  } else {
+    newSettings = Settings("Dark", settingsList[0].language);
+  }
+
+  settingsList.remove(settingsList[0]);
+  settingsList.add(newSettings);
+
+  List<dynamic> removedList = settingsList;
+  String newContent = jsonEncode(removedList);
+  File file = new File(path);
+
+  file.writeAsStringSync(newContent);
+}
+
+void setLanguage() async {
+  String documentPath = await provider.getApplicationDocumentsPath();
+  String path = documentPath + "\\GloryTodoDesktop\\settings.json";
+  String cont = File(path).readAsStringSync();
+  List<dynamic> l = jsonDecode(cont);
+  List<Settings> settingsList =
+      l.map<Settings>((e) => Settings.fromJson(e)).toList();
+  Settings newSettings;
+  if (settingsList[0].language == "English") {
+    newSettings = Settings(settingsList[0].colorMode, "Turkish");
+  } else {
+    newSettings = Settings(settingsList[0].colorMode, "English");
+  }
+
+  settingsList.remove(settingsList[0]);
+  settingsList.add(newSettings);
+
+  List<dynamic> removedList = settingsList;
+  String newContent = jsonEncode(removedList);
+  File file = new File(path);
+
+  file.writeAsStringSync(newContent);
 }

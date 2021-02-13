@@ -3,6 +3,7 @@ import 'package:glory_todo_desktop/Pages/TodosPage.dart';
 import 'package:glory_todo_desktop/core/GloryIcons/GloryIcons.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
+import 'package:glory_todo_desktop/core/models/Settings.dart';
 import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -50,6 +51,7 @@ class _TabloWidgetState extends State<TabloWidget> {
     });
   }
 
+  List<Settings> settings;
   @override
   void initState() {
     // TODO: implement initState
@@ -59,8 +61,15 @@ class _TabloWidgetState extends State<TabloWidget> {
     });
   }
 
+  void refreshSettings() {
+    readSettings().then((value) {
+      settings = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    refreshSettings();
     return GestureDetector(
       key: ValueKey(widget.projectName),
       onTap: () {
@@ -84,13 +93,21 @@ class _TabloWidgetState extends State<TabloWidget> {
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: widget.isNight ? Colors.black26 : Colors.grey.shade300,
+                color: settings != null
+                    ? settings[0].colorMode == "Dark"
+                        ? Colors.black26
+                        : Colors.grey.shade300
+                    : Colors.black26,
 
                 blurRadius: 5,
                 offset: Offset(0, 2), // changes position of shadow
               ),
             ],
-            color: widget.isNight ? Color(0xFF1c1d21) : Color(0xFFd7d8de),
+            color: settings != null
+                ? settings[0].colorMode == "Dark"
+                    ? Color(0xFF1c1d21)
+                    : Color(0xFFd7d8de)
+                : Color(0xFF1c1d21),
             borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: <Widget>[

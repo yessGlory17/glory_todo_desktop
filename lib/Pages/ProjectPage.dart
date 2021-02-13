@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:glory_todo_desktop/Pages/SettingsPage.dart';
 import 'package:glory_todo_desktop/core/components/Table.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'dart:convert';
 import 'package:glory_todo_desktop/core/models/Todo.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
+import 'package:glory_todo_desktop/core/models/Settings.dart';
+import 'package:glory_todo_desktop/core/Lang/Lang.dart';
 import 'dart:math';
 import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ProjectPage extends StatefulWidget {
   @override
@@ -20,10 +24,17 @@ class _ProjectPageState extends State<ProjectPage> {
   var projeBaslik = TextEditingController();
   int tablesIndexCount = 0;
   Future<List<Project>> tables = readProjects();
+  List<Settings> settings;
 
   void updateProjectsWidgets() {
     setState(() {
       tables = readProjects();
+    });
+  }
+
+  void refreshSettings() {
+    readSettings().then((value) {
+      settings = value;
     });
   }
 
@@ -40,7 +51,9 @@ class _ProjectPageState extends State<ProjectPage> {
   Widget build(BuildContext context) {
     double gridCount = MediaQuery.of(context).size.width / 300;
     print("PROJE SAYFASIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-    List<Color> backgroundColorGradient = setModeColor(isNight);
+    List<Color> backgroundColorGradient =
+        setModeColor(settings != null ? settings[0].colorMode : "Dark");
+    refreshSettings();
     return Scaffold(
         appBar: AppBar(
           elevation: 0.2,
@@ -50,22 +63,41 @@ class _ProjectPageState extends State<ProjectPage> {
             fit: BoxFit.contain,
             isAntiAlias: true,
           ),
-          backgroundColor: isNight ? Color(0xFF141518) : Color(0xFFedeef5),
+          backgroundColor: settings != null
+              ? settings[0].colorMode == "Dark"
+                  ? Color(0xFF141518)
+                  : Color(0xFFedeef5)
+              : Color(0xFF141518),
           actions: [
             IconButton(
                 icon: Icon(
                   Icons.settings,
-                  color: isNight ? Colors.white54 : Colors.black54,
+                  color: settings != null
+                      ? settings[0].colorMode == "Dark"
+                          ? Colors.white54
+                          : Colors.black54
+                      : Colors.white54,
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeftWithFade,
+                          child: SettingsPage(isNight)));
+                }),
             IconButton(
                 icon: Icon(
                   Icons.nightlight_round,
-                  color: isNight ? Colors.white54 : Colors.yellow.shade300,
+                  color: settings != null
+                      ? settings[0].colorMode == "Dark"
+                          ? Colors.white54
+                          : Colors.yellow.shade300
+                      : Colors.white54,
                 ),
                 onPressed: () {
                   setState(() {
-                    isNight = !isNight;
+                    setChangeColorMode();
+                    refreshSettings();
                   });
                 })
           ],
@@ -91,7 +123,12 @@ class _ProjectPageState extends State<ProjectPage> {
                       title: Text(
                         "Yeni Proje Adı?",
                         style: TextStyle(
-                            color: isNight ? Colors.white : Colors.black),
+                          color: settings != null
+                              ? settings[0].colorMode == "Dark"
+                                  ? Colors.white54
+                                  : Colors.black54
+                              : Colors.white54,
+                        ),
                       ),
                       content: TextFormField(
                         controller: projeBaslik,
@@ -100,15 +137,26 @@ class _ProjectPageState extends State<ProjectPage> {
                         decoration: InputDecoration(
                             hintText: "Proje Adını Giriniz",
                             hintStyle: TextStyle(
-                                color: isNight ? Colors.white : Colors.black)),
+                              color: settings != null
+                                  ? settings[0].colorMode == "Dark"
+                                      ? Colors.white54
+                                      : Colors.black54
+                                  : Colors.white54,
+                            )),
                       ),
-                      backgroundColor: isNight ? geceOnPlan : Color(0xFFf1f2f6),
+                      backgroundColor: settings != null
+                          ? settings[0].colorMode == "Dark"
+                              ? geceOnPlan
+                              : Color(0xFFf1f2f6)
+                          : geceOnPlan,
                       actions: [
                         Center(
                           child: FlatButton(
                             color: Colors.green.shade400,
                             onPressed: () {
                               setState(() {
+                                print("DİL TESTİİİİİİİİİ =============> " +
+                                    Lang.turkce["projectPageCreateButton"]);
                                 addProject(new Project(
                                     tablesIndexCount + 1,
                                     projeBaslik.text,
@@ -191,18 +239,22 @@ class _ProjectPageState extends State<ProjectPage> {
     return rand;
   }
 
-  List<Color> setModeColor(bool isNight) {
-    switch (isNight) {
-      case true:
-        {
-          return [Color(0xFF141518), Color(0xFF191b1f)];
-        }
-        break;
-      case false:
-        {
-          return [Color(0xFFedeef5), Color(0xFFe9eaf5)];
-        }
-        break;
+  List<Color> setModeColor(String isNight) {
+    if (settings != null) {
+      switch (isNight) {
+        case "Dark":
+          {
+            return [Color(0xFF141518), Color(0xFF191b1f)];
+          }
+          break;
+        case "Light":
+          {
+            return [Color(0xFFedeef5), Color(0xFFe9eaf5)];
+          }
+          break;
+      }
+    } else {
+      return [Color(0xFF141518), Color(0xFF191b1f)];
     }
   }
 }

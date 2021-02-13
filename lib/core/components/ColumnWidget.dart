@@ -122,6 +122,7 @@ class _ColumnWidgetState extends State<ColumnWidget> {
       width: 300,
       constraints: BoxConstraints(
         minHeight: 200,
+        maxHeight: MediaQuery.of(context).size.height - 50,
       ),
       decoration: BoxDecoration(
           boxShadow: [
