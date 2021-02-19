@@ -33,7 +33,7 @@ Basic and Primitive Flutter Desktop Project!
   - [x] Edit Column Name
   
 ### 0.3.0
- > Target Date 20.02.2021
+ > Target Date 25.02.2021
   - [ ] Progressbar for Projects
   - [ ] Reorderable Columns
   
