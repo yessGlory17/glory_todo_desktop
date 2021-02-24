@@ -4,6 +4,7 @@ import 'package:glory_todo_desktop/core/components/ColumnWidget.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'dart:io';
 import 'package:glory_todo_desktop/core/components/Table.dart';
+import 'package:glory_todo_desktop/core/models/Settings.dart';
 import 'package:glory_todo_desktop/core/models/Todo.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
 
@@ -12,11 +13,19 @@ class TodosPage extends StatefulWidget {
   String projectName;
   int projectId;
   String projecName;
-
+  List<Settings> settings;
   final Function() updateProjectWidgets;
   final Function() updateProjectProgressBar;
-  TodosPage(this.isNight, this.projectName, this.projectId, this.projecName,
-      this.updateProjectWidgets, this.updateProjectProgressBar);
+  final Function() refreshSettings;
+  TodosPage(
+      this.isNight,
+      this.projectName,
+      this.projectId,
+      this.projecName,
+      this.updateProjectWidgets,
+      this.updateProjectProgressBar,
+      this.refreshSettings,
+      this.settings);
 
   @override
   _TodosPageState createState() => _TodosPageState();
@@ -28,7 +37,7 @@ class _TodosPageState extends State<TodosPage> {
   int kolonSayac = 0;
   String newProjectName;
   var projeAdiDuzenlemeKontroller = TextEditingController();
-
+  List<Settings> settings;
   @override
   void initState() {
     // TODO: implement initState
@@ -42,6 +51,12 @@ class _TodosPageState extends State<TodosPage> {
     });
   }
 
+  void refreshSettings() {
+    readSettings().then((value) {
+      settings = value;
+    });
+  }
+
   void back() {
     setState(() {
       widget.updateProjectWidgets();
@@ -51,20 +66,29 @@ class _TodosPageState extends State<TodosPage> {
 
   @override
   Widget build(BuildContext context) {
+    refreshSettings();
     print("Todos Page projectName => " + widget.projecName);
     int myIndex = 0;
     kolonListe = findColumn(widget.projectId,
         widget.projecName); //Buraya JSON üzerinden bulma fonksiyonu gelecek.
     kolonListe.then((value) => print("Uzunluk   " + value.toString()));
-    List<Color> backgroundColorGradient = setModeColor(widget.isNight);
+    List<Color> backgroundColorGradient = setModeColor(
+        widget.settings != null ? widget.settings[0].colorMode : "Dark");
     return Scaffold(
         appBar: AppBar(
-          backgroundColor:
-              widget.isNight ? Color(0xFF141518) : Color(0xFFedeef5),
+          backgroundColor: widget.settings != null
+              ? widget.settings[0].colorMode == "Dark"
+                  ? Color(0xFF141518)
+                  : Color(0xFFedeef5)
+              : Color(0xFF141518),
           leading: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_outlined,
-                color: widget.isNight ? Colors.white70 : Color(0xFF212121),
+                color: widget.settings != null
+                    ? widget.settings[0].colorMode == "Dark"
+                        ? Colors.white54
+                        : Colors.black54
+                    : Colors.white54,
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -158,11 +182,18 @@ class _TodosPageState extends State<TodosPage> {
             IconButton(
                 icon: Icon(
                   Icons.nightlight_round,
-                  color: widget.isNight ? Colors.white : Colors.yellow.shade300,
+                  color: widget.settings != null
+                      ? widget.settings[0].colorMode == "Dark"
+                          ? Colors.white54
+                          : Colors.yellow.shade300
+                      : Colors.white54,
                 ),
                 onPressed: () {
                   setState(() {
                     widget.isNight = !widget.isNight;
+                    setChangeColorMode();
+                    refreshSettings();
+                    widget.refreshSettings();
                   });
                 })
           ],
@@ -180,8 +211,12 @@ class _TodosPageState extends State<TodosPage> {
                         title: Text(
                           "New Column Name?",
                           style: TextStyle(
-                              color:
-                                  widget.isNight ? Colors.white : Colors.black),
+                            color: widget.settings != null
+                                ? widget.settings[0].colorMode == "Dark"
+                                    ? Colors.white54
+                                    : Colors.black54
+                                : Colors.white54,
+                          ),
                         ),
                         content: TextFormField(
                           style: TextStyle(
@@ -191,13 +226,18 @@ class _TodosPageState extends State<TodosPage> {
                           decoration: InputDecoration(
                               hintText: "New column name",
                               hintStyle: TextStyle(
-                                  color: widget.isNight
-                                      ? Colors.white
-                                      : Colors.black)),
+                                color: widget.settings != null
+                                    ? widget.settings[0].colorMode == "Dark"
+                                        ? Colors.white54
+                                        : Colors.black54
+                                    : Colors.white54,
+                              )),
                         ),
-                        backgroundColor: widget.isNight
-                            ? Color(0xFF212121)
-                            : Color(0xFFf1f2f6),
+                        backgroundColor: settings != null
+                            ? settings[0].colorMode == "Dark"
+                                ? Color(0xFF212121)
+                                : Color(0xFFf1f2f6)
+                            : Color(0xFF212121),
                         actions: [
                           Center(
                             child: FlatButton(
@@ -303,18 +343,22 @@ class _TodosPageState extends State<TodosPage> {
     kolonListe.then((value) => value.insert(newInd, (items as ProjectColumn)));
   }
 
-  List<Color> setModeColor(bool isNight) {
-    switch (isNight) {
-      case true:
-        {
-          return [Color(0xFF141518), Color(0xFF191b1f)];
-        }
-        break;
-      case false:
-        {
-          return [Color(0xFFedeef5), Color(0xFFe9eaf5)];
-        }
-        break;
+  List<Color> setModeColor(String isNight) {
+    if (settings != null) {
+      switch (isNight) {
+        case "Dark":
+          {
+            return [Color(0xFF141518), Color(0xFF191b1f)];
+          }
+          break;
+        case "Light":
+          {
+            return [Color(0xFFedeef5), Color(0xFFe9eaf5)];
+          }
+          break;
+      }
+    } else {
+      return [Color(0xFF141518), Color(0xFF191b1f)];
     }
   }
 }

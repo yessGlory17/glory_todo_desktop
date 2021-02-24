@@ -608,3 +608,8 @@ void setLanguage() async {
 
   file.writeAsStringSync(newContent);
 }
+
+
+getLanguage() async{
+  
+}

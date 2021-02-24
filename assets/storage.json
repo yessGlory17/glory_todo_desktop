@@ -1,0 +1,213 @@
+[
+    {
+        "projectID": 1,
+        "projectName": "GLORY TODO APP",
+        "columns": [
+            {
+                "columnId": 1,
+                "columnName": "USER INTERFACE",
+                "todos": [
+                    {
+                        "todoId": 1,
+                        "todo": "TRANSİTİON ANİMATİONS",
+                        "isCheck": false
+                    },
+                    {
+                        "todoId": 2,
+                        "todo": "NEW PURE DESİGN",
+                        "isCheck": false
+                    },
+                    {
+                        "todoId": 3,
+                        "todo": "REORDERABLE COLUMNS",
+                        "isCheck": false
+                    }
+                ]
+            },
+            {
+                "columnId": 2,
+                "columnName": "FİLE OPERATİONS",
+                "todos": [
+                    {
+                        "todoId": 1,
+                        "todo": "CREATE STORAGE FİLE",
+                        "isCheck": true
+                    },
+                    {
+                        "todoId": 2,
+                        "todo": "ADD PROJECT",
+                        "isCheck": true
+                    },
+                    {
+                        "todoId": 3,
+                        "todo": "ADD COLUMN",
+                        "isCheck": true
+                    },
+                    {
+                        "todoId": 4,
+                        "todo": "ADD TODO",
+                        "isCheck": true
+                    },
+                    {
+                        "todoId": 5,
+                        "todo": "REMOVE PROJECT",
+                        "isCheck": true
+                    },
+                    {
+                        "todoId": 6,
+                        "todo": "CHECK TODO",
+                        "isCheck": true
+                    },
+                    {
+                        "todoId": 7,
+                        "todo": "REMOVE COLUMN",
+                        "isCheck": false
+                    },
+                    {
+                        "todoId": 8,
+                        "todo": "EDİT PROJECT NAME",
+                        "isCheck": true
+                    },
+                    {
+                        "todoId": 9,
+                        "todo": "EDİT COLUMN NAME",
+                        "isCheck": false
+                    }
+                ]
+            },
+            {
+                "columnId": 3,
+                "columnName": "DESİNG",
+                "todos": [
+                    {
+                        "todoId": 1,
+                        "todo": "PURE BACKGROUND DESİGN",
+                        "isCheck": false
+                    },
+                    {
+                        "todoId": 2,
+                        "todo": "FİND LİGHT MODE COLORS",
+                        "isCheck": false
+                    }
+                ]
+            },
+            {
+                "columnId": 4,
+                "columnName": "BUGS",
+                "todos": [
+                    {
+                        "todoId": 1,
+                        "todo": "SHOW DİALOG INPUT TEXT COLOR",
+                        "isCheck": false
+                    }
+                ]
+            },
+            {
+                "columnId": 5,
+                "columnName": "FEATURES",
+                "todos": [
+                    {
+                        "todoId": 1,
+                        "todo": "PROGRESS BAR YAPILACAK",
+                        "isCheck": false
+                    },
+                    {
+                        "todoId": 2,
+                        "todo": "KOLON SİLME",
+                        "isCheck": false
+                    },
+                    {
+                        "todoId": 3,
+                        "todo": "GÜNDÜZ MODU YAPILACAK",
+                        "isCheck": false
+                    }
+                ]
+            },
+            {
+                "columnId": 6,
+                "columnName": "TESTS",
+                "todos": []
+            }
+        ]
+    },
+    {
+        "projectID": 2,
+        "projectName": "YAPILACAKLAR",
+        "columns": [
+            {
+                "columnId": 1,
+                "columnName": "EKLENECEKLER",
+                "todos": [
+                    {
+                        "todoId": 1,
+                        "todo": "İLERLEME GÖSTERME",
+                        "isCheck": false
+                    },
+                    {
+                        "todoId": 2,
+                        "todo": "KOLON SÜRÜKLEME",
+                        "isCheck": false
+                    },
+                    {
+                        "todoId": 3,
+                        "todo": "GÖREV SÜRÜKLEME VE KOLONLAR ARASAINDA GEZDİRME",
+                        "isCheck": false
+                    },
+                    {
+                        "todoId": 4,
+                        "todo": "SADE GÜNDÜZ MODU",
+                        "isCheck": false
+                    }
+                ]
+            },
+            {
+                "columnId": 2,
+                "columnName": "DÜZELTİLECEKLER",
+                "todos": [
+                    {
+                        "todoId": 1,
+                        "todo": "GÖREV GİRME RENGİ DÜZELT",
+                        "isCheck": false
+                    }
+                ]
+            },
+            {
+                "columnId": 3,
+                "columnName": "KOD DA DÜZELTMELER",
+                "todos": [
+                    {
+                        "todoId": 1,
+                        "todo": "GEREKSİZ YORUMLARI SİL",
+                        "isCheck": false
+                    },
+                    {
+                        "todoId": 2,
+                        "todo": "TÜRKÇE SATIRLARI İNGİLİZCEYE ÇEVİR",
+                        "isCheck": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "projectID": 3,
+        "projectName": "DGS",
+        "columns": [
+            {
+                "columnId": 1,
+                "columnName": "KONULAR",
+                "todos": []
+            },
+            {
+                "columnId": 2,
+                "columnName": "TESTLER",
+                "todos": []
+            },
+            {
+                "columnId": 3,
+                "columnName": "TEKRAR",
+                "todos": []
+            }
+        ]
+    }
+]

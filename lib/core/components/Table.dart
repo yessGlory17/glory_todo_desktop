@@ -13,8 +13,10 @@ class TabloWidget extends StatefulWidget {
   int projectId;
   String projectName;
   final Function updateProjectsW;
+  final Function refreshSettings;
+  List<Settings> settings;
   TabloWidget(this.isNight, this.tableHeader, this.projectId, this.projectName,
-      this.updateProjectsW);
+      this.updateProjectsW, this.refreshSettings, this.settings);
 
   @override
   _TabloWidgetState createState() => _TabloWidgetState();
@@ -69,7 +71,7 @@ class _TabloWidgetState extends State<TabloWidget> {
 
   @override
   Widget build(BuildContext context) {
-    refreshSettings();
+    widget.refreshSettings();
     return GestureDetector(
       key: ValueKey(widget.projectName),
       onTap: () {
@@ -84,7 +86,9 @@ class _TabloWidgetState extends State<TabloWidget> {
                     widget.projectId,
                     widget.projectName,
                     widget.updateProjectsW,
-                    updateProgressBar)));
+                    updateProgressBar,
+                    this.refreshSettings,
+                    this.settings)));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -93,8 +97,8 @@ class _TabloWidgetState extends State<TabloWidget> {
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: settings != null
-                    ? settings[0].colorMode == "Dark"
+                color: widget.settings != null
+                    ? widget.settings[0].colorMode == "Dark"
                         ? Colors.black26
                         : Colors.grey.shade300
                     : Colors.black26,
@@ -103,8 +107,8 @@ class _TabloWidgetState extends State<TabloWidget> {
                 offset: Offset(0, 2), // changes position of shadow
               ),
             ],
-            color: settings != null
-                ? settings[0].colorMode == "Dark"
+            color: widget.settings != null
+                ? widget.settings[0].colorMode == "Dark"
                     ? Color(0xFF1c1d21)
                     : Color(0xFFd7d8de)
                 : Color(0xFF1c1d21),

@@ -53,7 +53,8 @@ flutter:
     - assets/logo.png
     - assets/glory_todo_desktop.db
     - assets/test.json
-    
+    - assets/storage.json
+    - assets/settings.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

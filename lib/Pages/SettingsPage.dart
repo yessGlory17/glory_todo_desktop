@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
+import 'package:glory_todo_desktop/core/models/Settings.dart';
+import 'package:glory_todo_desktop/core/Lang/Lang.dart';
 
 class SettingsPage extends StatefulWidget {
   bool isNight;
@@ -11,6 +13,14 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  List<Settings> settings;
+
+  void refreshSettings() {
+    readSettings().then((value) {
+      settings = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Color> backgroundColorGradient = setModeColor(widget.isNight);
@@ -61,7 +71,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "Renk Modu : ",
+                          settings != null
+                              ? settings[0].language == "English"
+                                  ? Lang.english["settingsColorMode"]
+                                  : Lang.turkce["settingsColorMode"]
+                              : "Color Mode ",
                           style: TextStyle(
                               fontSize: 20,
                               fontFamily: "Roboto",
@@ -79,6 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           onPressed: () {
                             setState(() {
                               setChangeColorMode();
+                              refreshSettings();
                             });
                           },
                         )
@@ -90,7 +105,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "Dil Seçeneği : ",
+                          settings != null
+                              ? settings[0].language == "English"
+                                  ? Lang.english["settingsLangMode"]
+                                  : Lang.turkce["settingsLangMode"]
+                              : "Language Option :",
                           style: TextStyle(
                               fontSize: 20,
                               fontFamily: "Roboto",
@@ -102,7 +121,11 @@ class _SettingsPageState extends State<SettingsPage> {
                         RaisedButton(
                           color: Colors.transparent,
                           child: Text(
-                              widget.lang == "Türkçe" ? "Türkçe" : "English",
+                              settings != null
+                                  ? settings[0].language == "Turkish"
+                                      ? "Turkish"
+                                      : "English"
+                                  : "English",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: "Roboto",
@@ -113,6 +136,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           onPressed: () {
                             setState(() {
                               setLanguage();
+                              refreshSettings();
                             });
                           },
                         )

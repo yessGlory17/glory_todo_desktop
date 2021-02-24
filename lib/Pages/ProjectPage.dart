@@ -108,7 +108,11 @@ class _ProjectPageState extends State<ProjectPage> {
           backgroundColor: Color(0xFF0DC472),
           icon: Icon(Icons.add),
           label: Text(
-            "Create",
+            settings != null
+                ? settings[0].language == "English"
+                    ? Lang.english["projectPageCreateButton"]
+                    : Lang.turkce["projectPageCreateButton"]
+                : "Create!",
             style: TextStyle(
                 fontFamily: "Roboto",
                 fontWeight: FontWeight.w400,
@@ -121,7 +125,11 @@ class _ProjectPageState extends State<ProjectPage> {
                   builder: (BuildContext context) {
                     return new AlertDialog(
                       title: Text(
-                        "Yeni Proje Adı?",
+                        settings != null
+                            ? settings[0].language == "English"
+                                ? Lang.english["newProjectHeader"]
+                                : Lang.turkce["newProjectHeader"]
+                            : "New Project Name?",
                         style: TextStyle(
                           color: settings != null
                               ? settings[0].colorMode == "Dark"
@@ -181,7 +189,12 @@ class _ProjectPageState extends State<ProjectPage> {
                             },
                             child: Container(
                               child: Text(
-                                "Oluştur",
+                                settings != null
+                                    ? settings[0].language == "English"
+                                        ? Lang
+                                            .english["projectPageCreateButton"]
+                                        : Lang.turkce["projectPageCreateButton"]
+                                    : "Oluştur",
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
@@ -226,7 +239,9 @@ class _ProjectPageState extends State<ProjectPage> {
                         projects[index].projectName,
                         projects[index].projectID,
                         projects[index].projectName,
-                        updateProjectsWidgets);
+                        updateProjectsWidgets,
+                        refreshSettings,
+                        this.settings);
                     //print("YAZ :=> " + data.toString());
                   },
                 );
