@@ -34,9 +34,15 @@ Basic and Primitive Flutter Desktop Project!
   
 ### 0.3.0
  > Target Date 01.03.2021
+  - [x] Language Support (ENG & TR)
+  - [ ] Theme Support
+  - [ ] New State Managment
+
+
+### 0.4.0
+ > Target Date 15.03.2021
   - [ ] Progressbar for Projects
   - [ ] Reorderable Columns
-  
   
 ## Getting Started
 
