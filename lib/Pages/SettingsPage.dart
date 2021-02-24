@@ -23,7 +23,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> backgroundColorGradient = setModeColor(widget.isNight);
+    List<Color> backgroundColorGradient = setModeColor(settings != null
+        ? settings[0].colorMode == "Dark"
+            ? true
+            : false
+        : true);
     return Scaffold(
       appBar: AppBar(
         elevation: 0.2,
@@ -42,7 +46,11 @@ class _SettingsPageState extends State<SettingsPage> {
               Navigator.pop(context);
             }),
         actions: [],
-        backgroundColor: widget.isNight ? Color(0xFF141518) : Color(0xFFedeef5),
+        backgroundColor: settings != null
+            ? settings[0].colorMode == "Dark"
+                ? Color(0xFF141518)
+                : Color(0xFFedeef5)
+            : Color(0xFF141518),
       ),
       backgroundColor: Colors.transparent,
       body: Container(
@@ -86,9 +94,11 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         IconButton(
                           icon: Icon(Icons.nightlight_round),
-                          color: widget.isNight
-                              ? Colors.white54
-                              : Colors.yellow.shade300,
+                          color: settings != null
+                              ? settings[0].colorMode == "Dark"
+                                  ? Colors.white54
+                                  : Colors.yellow.shade300
+                              : Colors.white54,
                           iconSize: 20,
                           onPressed: () {
                             setState(() {
