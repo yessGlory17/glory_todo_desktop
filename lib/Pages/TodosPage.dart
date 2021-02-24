@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
+import 'package:glory_todo_desktop/core/Lang/Lang.dart';
 import 'package:glory_todo_desktop/core/components/ColumnWidget.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'dart:io';
@@ -114,7 +115,11 @@ class _TodosPageState extends State<TodosPage> {
                       builder: (BuildContext context) {
                         return new AlertDialog(
                           title: Text(
-                            "Proje Adını Düzenle",
+                            settings != null
+                                ? settings[0].language == "English"
+                                    ? Lang.english["editProjectNameHeader"]
+                                    : Lang.turkce["editProjectNameHeader"]
+                                : "Edit Project Name",
                             style: TextStyle(
                                 color: widget.isNight
                                     ? Colors.white
@@ -156,7 +161,13 @@ class _TodosPageState extends State<TodosPage> {
                                 },
                                 child: Container(
                                   child: Text(
-                                    "Oluştur",
+                                    settings != null
+                                        ? settings[0].language == "English"
+                                            ? Lang.english[
+                                                "projectPageCreateButton"]
+                                            : Lang.turkce[
+                                                "projectPageCreateButton"]
+                                        : "Create",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -201,7 +212,11 @@ class _TodosPageState extends State<TodosPage> {
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton.extended(
             icon: Icon(Icons.add),
-            label: Text("New"),
+            label: Text(settings != null
+                ? settings[0].language == "English"
+                    ? Lang.english["todosPageAddButton"]
+                    : Lang.turkce["todosPageAddButton"]
+                : "New "),
             onPressed: () {
               setState(() {
                 showDialog(
@@ -209,7 +224,11 @@ class _TodosPageState extends State<TodosPage> {
                     builder: (BuildContext context) {
                       return new AlertDialog(
                         title: Text(
-                          "New Column Name?",
+                          settings != null
+                              ? settings[0].language == "English"
+                                  ? Lang.english["newTodoHeader"]
+                                  : Lang.turkce["newTodoHeader"]
+                              : "New Column Name :",
                           style: TextStyle(
                             color: widget.settings != null
                                 ? widget.settings[0].colorMode == "Dark"
@@ -224,7 +243,11 @@ class _TodosPageState extends State<TodosPage> {
                                   widget.isNight ? Colors.white : Colors.black),
                           controller: kontroller,
                           decoration: InputDecoration(
-                              hintText: "New column name",
+                              hintText: settings != null
+                                  ? settings[0].language == "English"
+                                      ? Lang.english["newTodoHeader2"]
+                                      : Lang.turkce["newTodoHeader2"]
+                                  : "New Column Name ",
                               hintStyle: TextStyle(
                                 color: widget.settings != null
                                     ? widget.settings[0].colorMode == "Dark"
@@ -260,7 +283,13 @@ class _TodosPageState extends State<TodosPage> {
                               },
                               child: Container(
                                 child: Text(
-                                  "Oluştur",
+                                  settings != null
+                                      ? settings[0].language == "English"
+                                          ? Lang.english[
+                                              "projectPageCreateButton"]
+                                          : Lang
+                                              .turkce["projectPageCreateButton"]
+                                      : "Create",
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
@@ -317,7 +346,11 @@ class _TodosPageState extends State<TodosPage> {
                     } else {
                       return new Center(
                         child: Text(
-                          "Herhangi bir kolon bulunamadı!",
+                          settings != null
+                              ? settings[0].language == "English"
+                                  ? Lang.english["noColumnsHeader"]
+                                  : Lang.turkce["noColumnsHeader"]
+                              : "No columns were found!",
                           style: TextStyle(
                               color: widget.isNight
                                   ? Colors.white60

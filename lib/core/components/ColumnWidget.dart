@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:glory_todo_desktop/Pages/TodosPage.dart';
 import 'package:glory_todo_desktop/core/JsonManager/JsonManager.dart';
+import 'package:glory_todo_desktop/core/Lang/Lang.dart';
 import 'package:glory_todo_desktop/core/components/ColumnPopUpMenu.dart';
 import 'package:glory_todo_desktop/core/components/TodoWidget.dart';
 import 'package:glory_todo_desktop/core/models/Column.dart';
 import 'package:glory_todo_desktop/core/models/Project.dart';
+import 'package:glory_todo_desktop/core/models/Settings.dart';
 import 'package:glory_todo_desktop/core/models/Todo.dart';
 
 /*
@@ -35,6 +37,14 @@ class _ColumnWidgetState extends State<ColumnWidget> {
   int todoCounter = 0;
   String todoContent;
   Future<List<Todo>> gorevlerListe;
+  List<Settings> settings;
+
+  void refreshSettings() {
+    readSettings().then((value) {
+      settings = value;
+    });
+  }
+
   void updateTodoList() {
     setState(() {
       gorevlerListe = findTodos(widget.projectId, widget.projectName,
@@ -51,13 +61,24 @@ class _ColumnWidgetState extends State<ColumnWidget> {
     });
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    refreshSettings();
+  }
+
   void edit() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return new AlertDialog(
             title: Text(
-              "Yeni Kolon Adı?",
+              settings != null
+                  ? settings[0].language == "English"
+                      ? Lang.english["newColumnHeader"]
+                      : Lang.turkce["newColumnHeader"]
+                  : "New Column Name ",
               style: TextStyle(
                   color: widget.isNight ? Colors.white : Colors.black),
             ),
@@ -98,7 +119,11 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                   },
                   child: Container(
                     child: Text(
-                      "Düzenle",
+                      settings != null
+                          ? settings[0].language == "English"
+                              ? Lang.english["editButton"]
+                              : Lang.turkce["editButton"]
+                          : "Edit",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -189,7 +214,11 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                     print("Herhangi bir görev bulunamadı!");
                     return Center(
                         child: Text(
-                      "Herhangi bir görev yok!",
+                      settings != null
+                          ? settings[0].language == "English"
+                              ? Lang.english["noTodosHeader"]
+                              : Lang.turkce["noTodosHeader"]
+                          : "No task found!",
                       style: TextStyle(
                           color:
                               widget.isNight ? Colors.white60 : Colors.black87),
@@ -210,7 +239,11 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                         builder: (BuildContext context) {
                           return new AlertDialog(
                             title: Text(
-                              "Yeni Görev Ekle",
+                              settings != null
+                                  ? settings[0].language == "English"
+                                      ? Lang.english["newTodoHeader"]
+                                      : Lang.turkce["newTodoHeader"]
+                                  : "New Todo Name?",
                               style: TextStyle(
                                   color: widget.isNight
                                       ? Colors.white
@@ -228,7 +261,11 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                                         ? Colors.white
                                         : Colors.black),
                                 decoration: InputDecoration(
-                                    hintText: "Görevi Giriniz",
+                                    hintText: settings != null
+                                        ? settings[0].language == "English"
+                                            ? Lang.english["newTodoHeader2"]
+                                            : Lang.turkce["newTodoHeader2"]
+                                        : "New Todo Name?",
                                     hintStyle: TextStyle(
                                         color: widget.isNight
                                             ? Colors.white
@@ -261,13 +298,18 @@ class _ColumnWidgetState extends State<ColumnWidget> {
                                             widget.columnId,
                                             widget.columnName);
                                         gorevEklemeKontrol.clear();
+
                                         Navigator.pop(context);
                                       }
                                     });
                                   },
                                   child: Container(
                                     child: Text(
-                                      "Ekle",
+                                      settings != null
+                                          ? settings[0].language == "English"
+                                              ? Lang.english["addButton"]
+                                              : Lang.turkce["addButton"]
+                                          : "Add",
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
