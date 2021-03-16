@@ -33,7 +33,7 @@ Basic and Primitive Flutter Desktop Project!
   - [x] Edit Column Name
   
 ### 0.3.0
- > Target Date 10.03.2021
+ > Target Date 21.03.2021
   - [x] Language Support (ENG & TR)
   - [ ] Theme Support
   - [ ] New State Managment
